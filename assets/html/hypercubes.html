@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Masking Strategies — 3D Hypercube Distributions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1a2e;
+    --ink-mid:   #3d3d5c;
+    --ink-light: #7a7a9a;
+    --paper:     #fafaf8;
+    --paper-2:   #f0f0ec;
+    --rule:      #ddddd5;
+    --accent:    #7c4fa0;
+    --accent-2:  #b88fd4;
+    --accent-bg: #f3edf8;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  /* ── outer wrapper ── */
+  .figure-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 28px 36px;
+  }
+
+  /* ── header ── */
+  .fig-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .fig-subtitle {
+    font-size: 1.45rem;
+    color: var(--ink-light);
+    font-style: italic;
+    margin-bottom: 22px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fig-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    align-self: center;
+    margin: 0 10px;
+  }
+  .fig-subtitle::after {
+    display: none;
+  }
+  .drag-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--ink-light);
+    letter-spacing: 0.06em;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 3px 12px 4px;
+    border-radius: 20px;
+    font-style: normal;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+
+  .panel {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .panel:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 8px 24px rgba(124,79,160,0.10);
+    transform: translateY(-1px);
+  }
+
+  .panel canvas {
+    display: block;
+    width: 100% !important;
+    height: 210px !important;
+    cursor: grab;
+  }
+  .panel canvas:active { cursor: grabbing; }
+
+  /* thin coloured top bar per panel */
+  .panel::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .panel:hover::before { opacity: 1; }
+
+  .panel-label {
+    padding: 6px 10px 8px;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .panel-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .panel-name {
+    font-size: 1.30rem;
+    font-weight: 600;
+    color: var(--ink);
+    display: block;
+    line-height: 1.2;
+  }
+  .panel-desc {
+    font-size: 1.10rem;
+    color: var(--ink-light);
+    font-style: italic;
+    display: block;
+    line-height: 1.35;
+    margin-top: 2px;
+  }
+
+  /* ── divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+
+  /* ── caption ── */
+  .caption {
+    font-size: 1.22rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    font-weight: 300;
+    max-width: 980px;
+  }
+  .caption b  { font-weight: 600; color: var(--ink); }
+  .caption em { font-style: italic; }
+  .caption .cap-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+  }
+
+  /* ── probability legend (isolated panels only) ── */
+  .prob-legend {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .prob-legend-circles {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .prob-legend-circles span {
+    display: inline-block;
+    border-radius: 50%;
+    background: #8f699b;
+    opacity: 0.82;
+    flex-shrink: 0;
+  }
+  .prob-legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: #7a7a9a;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  /* ── reset button ── */
+  .btn-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.80rem;
+    color: var(--ink-mid);
+    letter-spacing: 0.06em;
+    background: #fff;
+    border: 1px solid var(--rule);
+    padding: 5px 14px 6px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+    margin-bottom: 18px;
+    white-space: nowrap;
+  }
+  .btn-reset:hover {
+    background: var(--accent-bg);
+    border-color: var(--accent-2);
+    color: var(--accent);
+    box-shadow: 0 2px 8px rgba(124,79,160,0.12);
+  }
+  .btn-reset:active {
+    transform: scale(0.97);
+  }
+  .btn-reset svg {
+    width: 13px; height: 13px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* entry animation */
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(12px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+  .panel {
+    animation: fadeUp 0.5s ease both;
+  }
+  .panel:nth-child(1){ animation-delay:0.05s }
+  .panel:nth-child(2){ animation-delay:0.10s }
+  .panel:nth-child(3){ animation-delay:0.15s }
+  .panel:nth-child(4){ animation-delay:0.20s }
+  .panel:nth-child(5){ animation-delay:0.25s }
+  .panel:nth-child(6){ animation-delay:0.30s }
+  .panel:nth-child(7){ animation-delay:0.35s }
+  .panel:nth-child(8){ animation-delay:0.40s }
+</style>
+</head>
+<body>
+<div class="figure-wrap">
+
+  <div class="fig-header">
+    <h2>Masking Strategies as Distributions over the Unit Hypercube</h2>
+  </div>
+
+  <p class="fig-subtitle">
+    Three modalities, modality&thinsp;3 is dominated <br> 5 000 samples per strategy
+    <span class="fig-rule"></span>
+    <span class="drag-hint">⟳ drag to rotate & scroll to zoom</span>
+  </p>
+
+  <button class="btn-reset" id="btnReset">
+    <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.16 2.4L3 8"/><path d="M3 3v5h5"/></svg>
+    Reset view
+  </button>
+
+  <div class="grid" id="grid"></div>
+  <hr class="divider">
+  <p class="caption" id="caption"></p>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ══════════════════════════════════════════════
+// RNG
+// ══════════════════════════════════════════════
+class RNG {
+  constructor(s){ this.s=s>>>0; }
+  next(){ this.s=(Math.imul(1664525,this.s)+1013904223)>>>0; return this.s/4294967296; }
+  uniform(lo=0,hi=1){ return lo+(hi-lo)*this.next(); }
+  normal(){ return Math.sqrt(-2*Math.log(this.next()+1e-12))*Math.cos(2*Math.PI*this.next()); }
+  gamma(a){
+    if(a<1) return this.gamma(1+a)*Math.pow(this.next(),1/a);
+    const d=a-1/3,c=1/Math.sqrt(9*d);
+    for(;;){
+      let x=this.normal(),v=1+c*x; if(v<=0)continue; v=v*v*v; const u=this.next();
+      if(u<1-0.0331*(x*x)*(x*x))return d*v;
+      if(Math.log(u)<0.5*x*x+d*(1-v+Math.log(v)))return d*v;
+    }
+  }
+  beta(a,b){ const g=this.gamma(a),h=this.gamma(b); return g/(g+h); }
+  dirichlet(al){ const gs=al.map(a=>this.gamma(a)),s=gs.reduce((a,b)=>a+b,0); return gs.map(g=>g/s); }
+}
+
+// ══════════════════════════════════════════════
+// Samplers
+// ══════════════════════════════════════════════
+const sampleConstant=(n,pt)=>{
+  const a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){a[i*3]=pt[0];a[i*3+1]=pt[1];a[i*3+2]=pt[2];} return a;
+};
+const sampleLine=(n,seed)=>{
+  const r=new RNG(seed),a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){const t=r.uniform();a[i*3]=t;a[i*3+1]=t;a[i*3+2]=t;} return a;
+};
+const sampleCube=(n,seed)=>{
+  const r=new RNG(seed),a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){a[i*3]=r.uniform();a[i*3+1]=r.uniform();a[i*3+2]=r.uniform();} return a;
+};
+const sampleDir=(n,alpha,seed)=>{
+  const r=new RNG(seed),a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){const d=r.dirichlet([alpha,alpha,alpha]);a[i*3]=d[0];a[i*3+1]=d[1];a[i*3+2]=d[2];} return a;
+};
+const sampleCustom=(n,pts,vals,seed)=>{
+  const r=new RNG(seed),tot=vals.reduce((a,b)=>a+b,0),w=vals.map(v=>Math.max(v,0)/tot);
+  const cdf=[];let c=0; for(const wi of w){c+=wi;cdf.push(c);}
+  const a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){
+    const rv=r.next();let idx=cdf.length-1;
+    for(let j=0;j<cdf.length;j++){if(rv<cdf[j]){idx=j;break;}}
+    a[i*3]=pts[idx][0];a[i*3+1]=pts[idx][1];a[i*3+2]=pts[idx][2];
+  } return a;
+};
+const sampleBeta=(n,sh,weights,sw,seed)=>{
+  const r=new RNG(seed);
+  const corners=[[0,0,0],[1,1,1],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1]];
+  let wt=weights.map(v=>Math.max(v,0));const tot=wt.reduce((a,b)=>a+b,0);wt=wt.map(v=>v/tot);
+  const cdf=[];let c=0;for(const wi of wt){c+=wi;cdf.push(c);}
+  const [sx,sy,sz]=sw,a=new Float32Array(n*3);
+  for(let i=0;i<n;i++){
+    const rv=r.next();let idx=cdf.length-1;
+    for(let j=0;j<cdf.length;j++){if(rv<cdf[j]){idx=j;break;}}
+    const [cx,cy,cz]=corners[idx];
+    a[i*3]  =cx===0?r.beta(sh*sx,1):r.beta(1,sh/sx);
+    a[i*3+1]=cy===0?r.beta(sh*sy,1):r.beta(1,sh/sy);
+    a[i*3+2]=cz===0?r.beta(sh*sz,1):r.beta(1,sh/sz);
+  } return a;
+};
+
+// ══════════════════════════════════════════════
+// Data
+// ══════════════════════════════════════════════
+const N=20000,sh=10,lg=1/4,sm=1/12;
+const pd=0.1,pm=1-pd;
+const vMd=[pm**3,pd*pm**2,pd*pm**2,pd**2*pm,pd**2*pm,pd*pm**2,pd**2*pm,pd**3];
+const c8=[[0,0,0],[1,0,0],[0,1,0],[1,1,0],[1,0,1],[0,0,1],[0,1,1],[1,1,1]];
+const perf=[0.9,0.8,0.55];
+const coeff=perf.map((p,i)=>{let s=0;for(let j=0;j<perf.length;j++)if(j!==i)s+=p/perf[j];return s/2;});
+const prob=coeff.map(c=>c>1?0.5*(1+0.5*Math.tanh(c-1)):0);
+const iprob=prob.map(p=>1-p);
+const vOpm=[iprob[0]*iprob[1]*iprob[2],prob[0]*iprob[1]*iprob[2],iprob[0]*prob[1]*iprob[2],prob[0]*prob[1]*iprob[2]];
+const pOpm=[[0,0,0],[1,0,0],[0,1,0],[1,1,0]];
+
+const DS=[
+  { letter:'a', name:'Constant',
+    desc:'Single point at (0.75, 0.75, 0.75) <a href="https://arxiv.org/abs/2111.06377" target="_blank"><br>He et al., 2022</a>',
+    pts:sampleConstant(1,[0.75,0.75,0.75]), isolated:true, sr:0.10, op:0.95 },
+
+  { letter:'b', name:'Uniform',
+    desc:'Shared <span style="font-style: normal;">p ~ 𝒰(0,1)</span> across modalities <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210x.70200" target="_blank"><br>Zbinden et al., 2025</a>',
+    pts:sampleLine(N,0), isolated:false, ps:0.026, op:0.52 },
+
+  { letter:'c', name:'Dirichlet',
+    desc:'Symmetric Dirichlet with <br> <span style="font-style: normal;">α = 1\u2098</span> <a href="https://arxiv.org/abs/2204.01678" target="_blank"><br>Bachmann et al., 2025</a>',
+    pts:sampleDir(N,1.0,1), isolated:false, ps:0.026, op:0.26 },
+
+  { letter:'d', name:'Modality Dropout',
+    desc:'Samples only hypercube corners <a href="https://arxiv.org/abs/1501.00102" target="_blank"><br>Neverova et al., 2015</a>',
+    pts:sampleCustom(N,c8,vMd,2), isolated:true, sr:0.068, op:0.88 },
+
+  { letter:'e', name:'OPM',
+    desc:'Modality 3 never masked as it is dominated <a href="https://arxiv.org/abs/2410.11582" target="_blank"><br>Wei et al., 2024</a>',
+    pts:sampleCustom(N,pOpm,vOpm,3), isolated:true, sr:0.068, op:0.88 },
+
+  { letter:'f', name:'Uniform Hypercube',
+    desc:'Independent <span style="font-style: normal;">p\u2098 ~ 𝒰(0,1)</span> per modality <br>(this work)',
+    pts:sampleCube(N,4), isolated:false, ps:0.026, op:0.18 },
+
+  { letter:'g', name:'Beta Hypercube',
+    desc:'Mixture of product Beta distributions <br>(this work)',
+    pts:sampleBeta(N,sh,[lg,lg,...Array(6).fill(sm)],[1,1,1],5), isolated:false, ps:0.026, op:0.22 },
+
+  { letter:'h', name:'MIAM',
+    desc:'Dynamic imbalance-aware Beta hypercube <br>(this work)',
+    pts:sampleBeta(N,sh,[lg,lg,...Array(6).fill(sm)],[2,2,0.25],6), isolated:false, ps:0.026, op:0.22 },
+];
+
+// ══════════════════════════════════════════════
+// Three.js constants
+// ══════════════════════════════════════════════
+const COL_PT   = new THREE.Color('#8f699b');
+const COL_EDGE = new THREE.Color('#b0b0c0');
+const COL_FACE = new THREE.Color('#e8e8f0');
+const COL_TICK = '#5a5a7a';
+const COL_AX   = '#1a1a2e';
+
+const CV=[[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]];
+const CE=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+const CF=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[2,3,7,6],[1,2,6,5],[4,7,3,0]];
+
+// ── sprite factories ──
+function makeSprite(text, font, fillStyle, cw, ch, sw, sh2){
+  const c=document.createElement('canvas'); c.width=cw; c.height=ch;
+  const ctx=c.getContext('2d');
+  ctx.font=font; ctx.fillStyle=fillStyle;
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(text,cw/2,ch/2);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));
+  sp.scale.set(sw,sh2,1); sp.renderOrder=10; return sp;
+}
+const axisLabel=(t)=>makeSprite(t,'bold 48px "Crimson Pro",Georgia,serif',COL_AX,160,80,0.32,0.16);
+const tickLabel =(t)=>makeSprite(t,'500 46px "DM Mono",monospace',COL_TICK,160,80,0.30,0.15);
+
+// ══════════════════════════════════════════════
+// Scene builder
+// ══════════════════════════════════════════════
+function buildScene(ds){
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color('#ffffff');
+
+  // subtle gradient sky via a background plane (fake) — actually just white,
+  // the refinement comes from point glow
+
+  // ── edges ──
+  const edgeMat=new THREE.LineBasicMaterial({color:COL_EDGE,transparent:true,opacity:0.70});
+  for(const [a,b] of CE){
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...CV[a]),new THREE.Vector3(...CV[b])]);
+    scene.add(new THREE.Line(g,edgeMat));
+  }
+
+  // ── faces ──
+  for(const [a,b,c,d] of CF){
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute([
+      ...CV[a],...CV[b],...CV[c],...CV[a],...CV[c],...CV[d]
+    ],3));
+    scene.add(new THREE.Mesh(g,new THREE.MeshBasicMaterial({
+      color:COL_FACE,transparent:true,opacity:0.055,side:THREE.DoubleSide,depthWrite:false
+    })));
+  }
+
+  // ── axis labels ──
+  const lp1=axisLabel('p₁'); lp1.position.set(0.5,-0.30,-0.05); scene.add(lp1);
+  const lp2=axisLabel('p₂'); lp2.position.set(1.34,0.5,0.0);    scene.add(lp2);
+  const lp3=axisLabel('p₃'); lp3.position.set(1.26,1.26,0.5);   scene.add(lp3);
+
+  // ── ticks ──
+  const tl=0.045;
+  const tickMat=new THREE.LineBasicMaterial({color:new THREE.Color(COL_TICK),transparent:true,opacity:0.6});
+  function tick(p1,p2,lpos,txt){
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...p1),new THREE.Vector3(...p2)]);
+    scene.add(new THREE.Line(g,tickMat));
+    const s=tickLabel(txt); s.position.set(...lpos); scene.add(s);
+  }
+  // p1 bottom-front
+  for(const [v,t] of [[0,'0'],[0.5,'.5'],[1,'1']]){
+    tick([v,0,-tl],[v,0,tl],[v,-0.17,0],t);
+  }
+  // p2 bottom-right
+  for(const [v,t] of [[0,'0'],[0.5,'.5'],[1,'1']]){
+    tick([1+tl,v,0],[1-tl,v,0],[1.24,v,0],t);
+  }
+  // p3 right-back vertical
+  for(const [v,t] of [[0,'0'],[0.5,'.5'],[1,'1']]){
+    tick([1+tl,1,v],[1-tl,1,v],[1.24,1.16,v],t);
+  }
+
+  // ── points / spheres ──
+  if(ds.isolated){
+    // collect unique positions + counts
+    const map=new Map(); const n=ds.pts.length/3; let mx=0;
+    for(let i=0;i<n;i++){
+      const x=ds.pts[i*3],y=ds.pts[i*3+1],z=ds.pts[i*3+2];
+      const k=`${x.toFixed(5)},${y.toFixed(5)},${z.toFixed(5)}`;
+      const e=map.get(k)||{x,y,z,count:0}; e.count++; map.set(k,e);
+      if(e.count>mx)mx=e.count;
+    }
+    // Phong sphere — shaded, with specular highlight
+    const mat=new THREE.MeshPhongMaterial({
+      color:COL_PT, emissive:new THREE.Color('#3d1a5a'),
+      emissiveIntensity:0.18, shininess:80,
+      transparent:true, opacity:ds.op
+    });
+    const keyLight=new THREE.DirectionalLight(0xffffff,0.75); keyLight.position.set(4,5,6); scene.add(keyLight);
+    const fillLight=new THREE.DirectionalLight(0xd0c0f0,0.35); fillLight.position.set(-3,-1,2); scene.add(fillLight);
+    scene.add(new THREE.AmbientLight(0xffffff,0.55));
+    for(const {x,y,z,count} of map.values()){
+      const r=ds.sr*Math.sqrt(count/mx);
+      const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,14),mat);
+      m.position.set(x,y,z); scene.add(m);
+    }
+  } else {
+    // Dense cloud — two layered point passes for a soft glow effect:
+    // 1) large, very transparent → soft halo
+    // 2) small, more opaque    → crisp core
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute('position',new THREE.BufferAttribute(ds.pts,3));
+
+    const glow=new THREE.Points(geo,new THREE.PointsMaterial({
+      color:new THREE.Color('#c9a8e0'),
+      size:ds.ps*3.2, transparent:true, opacity:ds.op*0.18,
+      sizeAttenuation:true, depthWrite:false
+    }));
+    const core=new THREE.Points(geo,new THREE.PointsMaterial({
+      color:COL_PT,
+      size:ds.ps, transparent:true, opacity:ds.op,
+      sizeAttenuation:true
+    }));
+    scene.add(glow);
+    scene.add(core);
+  }
+
+  return scene;
+}
+
+// ══════════════════════════════════════════════
+// Panel setup
+// ══════════════════════════════════════════════
+const DEFAULT_RX = 0.42, DEFAULT_RY = 0.72, DEFAULT_DIST = 3.2;
+
+const panels=[];
+function addPanel(container, ds){
+  const W=container.clientWidth||260, H=210;
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(W,H);
+  renderer.shadowMap.enabled=false;
+  container.appendChild(renderer.domElement);
+
+  const scene=buildScene(ds);
+  const camera=new THREE.PerspectiveCamera(34,W/H,0.01,100);
+  let rx=DEFAULT_RX, ry=DEFAULT_RY, dist=DEFAULT_DIST;
+
+  function updCam(){
+    camera.position.set(
+      0.5+dist*Math.sin(ry)*Math.cos(rx),
+      0.5+dist*Math.sin(rx),
+      0.5+dist*Math.cos(ry)*Math.cos(rx)
+    );
+    camera.lookAt(0.5,0.5,0.5);
+  }
+  updCam();
+
+  // ── Smooth reset ──
+  let resetting=false, resetStart=null;
+  let fromRx=rx, fromRy=ry, fromDist=dist;
+  function startReset(){
+    fromRx=rx; fromRy=ry; fromDist=dist;
+    resetting=true; resetStart=null;
+  }
+
+  // ── Drag to rotate ──
+  let drag=false, lx=0, ly=0;
+  const el=renderer.domElement;
+  el.addEventListener('mousedown',e=>{
+    drag=true; lx=e.clientX; ly=e.clientY;
+    el.style.cursor='grabbing'; resetting=false;
+  });
+  window.addEventListener('mouseup',()=>{ drag=false; el.style.cursor='grab'; });
+  window.addEventListener('mousemove',e=>{
+    if(!drag) return;
+    ry -= (e.clientX-lx)*0.009;
+    rx += (e.clientY-ly)*0.009;
+    rx = Math.max(-1.45, Math.min(1.45, rx));
+    lx=e.clientX; ly=e.clientY; updCam();
+  });
+
+  // ── Scroll to zoom ──
+  el.addEventListener('wheel', e=>{
+    e.preventDefault();
+    resetting=false;
+    dist = Math.max(0.8, Math.min(8.0, dist + e.deltaY*0.005));
+    updCam();
+  }, {passive:false});
+
+  // ── Touch: drag + pinch-to-zoom ──
+  let touches=[], lastPinchDist=null;
+  el.addEventListener('touchstart', e=>{
+    resetting=false;
+    touches=[...e.touches];
+    if(e.touches.length===1){
+      drag=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY;
+    } else {
+      drag=false;
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      lastPinchDist=Math.hypot(dx,dy);
+    }
+  },{passive:true});
+
+  el.addEventListener('touchend', e=>{
+    touches=[...e.touches];
+    if(e.touches.length<2) lastPinchDist=null;
+    if(e.touches.length===0) drag=false;
+  });
+
+  el.addEventListener('touchmove', e=>{
+    e.preventDefault();
+    if(e.touches.length===1 && drag){
+      ry -= (e.touches[0].clientX-lx)*0.009;
+      rx += (e.touches[0].clientY-ly)*0.009;
+      rx = Math.max(-1.45, Math.min(1.45, rx));
+      lx=e.touches[0].clientX; ly=e.touches[0].clientY; updCam();
+    } else if(e.touches.length===2){
+      const dx=e.touches[0].clientX-e.touches[1].clientX;
+      const dy=e.touches[0].clientY-e.touches[1].clientY;
+      const d=Math.hypot(dx,dy);
+      if(lastPinchDist!=null){
+        dist = Math.max(0.8, Math.min(8.0, dist - (d-lastPinchDist)*0.012));
+        updCam();
+      }
+      lastPinchDist=d;
+    }
+  },{passive:false});
+
+  panels.push({renderer, scene, camera, container,
+    reset: startReset,
+    tick(ts){
+      if(!resetting) return;
+      if(!resetStart) resetStart=ts;
+      const t = Math.min((ts-resetStart)/600, 1);
+      const ease = 1-Math.pow(1-t,3);
+      rx   = fromRx   + (DEFAULT_RX   - fromRx  )*ease;
+      ry   = fromRy   + (DEFAULT_RY   - fromRy  )*ease;
+      dist = fromDist + (DEFAULT_DIST - fromDist)*ease;
+      updCam();
+      if(t>=1) resetting=false;
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// DOM
+// ══════════════════════════════════════════════
+const grid=document.getElementById('grid');
+DS.forEach(ds=>{
+  const panel=document.createElement('div'); panel.className='panel';
+
+  const wrap=document.createElement('div');
+  wrap.style.position='relative';
+  panel.appendChild(wrap);
+
+  // Probability legend for isolated (sphere) panels
+  if(ds.isolated){
+    const leg=document.createElement('div'); leg.className='prob-legend';
+    leg.innerHTML=
+      `<div class="prob-legend-circles">`+
+        `<span style="width:6px;height:6px;opacity:0.45"></span>`+
+        `<span style="width:10px;height:10px;opacity:0.65"></span>`+
+        `<span style="width:15px;height:15px;opacity:0.85"></span>`+
+      `</div>`+
+      `<span class="prob-legend-label">= higher probability</span>`;
+    wrap.appendChild(leg);
+  }
+
+  const lbl=document.createElement('div'); lbl.className='panel-label';
+  lbl.innerHTML=
+    `<span class="panel-letter">(${ds.letter})</span>`+
+    `<span class="panel-name">${ds.name}</span>`+
+    `<span class="panel-desc">${ds.desc}</span>`;
+  panel.appendChild(lbl);
+
+  grid.appendChild(panel);
+  addPanel(wrap,ds);
+});
+
+// Caption
+document.getElementById('caption').innerHTML=
+  `<b>Masking strategies</b> viewed as probability distributions `+
+  `<b>p</b>&thinsp;=&thinsp;(p<sub>1</sub>,&thinsp;p<sub>2</sub>,&thinsp;p<sub>3</sub>) `+
+  `over the unit hypercube, illustrated with three modalities where modality&thinsp;3 is dominated. `+
+  `5&thinsp;000 points are drawn per strategy to visualise the distribution. `+
+  `<b>(a)</b>&thinsp;Constant masking (e.g., 0.75). `+
+  `<b>(b)</b>&thinsp;Shared probability p&thinsp;∼&thinsp;𝒰(0,1) across modalities. `+
+  `<b>(c)</b>&thinsp;Symmetric Dirichlet with <b>α</b>&thinsp;=&thinsp;<b>1</b><sub>M</sub>. `+
+  `<b>(d)</b>&thinsp;Modality dropout with fixed probability. `+
+  `<b>(e)</b>&thinsp;OPM (dynamic masking): modality&thinsp;3 is never masked. `+
+  `<b>(f)</b>&thinsp;Uniform hypercube: independent p<sub>m</sub>&thinsp;∼&thinsp;𝒰(0,1) per modality for full support. `+
+  `<b>(g)</b>&thinsp;Beta hypercube: mixture of product-Beta distributions to prioritise corners. `+
+  `<b>(h)</b>&thinsp;MIAM (dynamic masking): Beta hypercube with imbalance-aware adjustments, `+
+  `causing modality&thinsp;3 to be masked less often than the others.`;
+
+// Reset button
+document.getElementById('btnReset').addEventListener('click',()=>{
+  panels.forEach(p=>p.reset());
+});
+
+// ══════════════════════════════════════════════
+// Render loop
+// ══════════════════════════════════════════════
+(function loop(ts){
+  requestAnimationFrame(loop);
+  for(const p of panels){ p.tick(ts); p.renderer.render(p.scene,p.camera); }
+})();
+
+window.addEventListener('resize',()=>{
+  for(const p of panels){
+    const w=p.container.clientWidth,h=210;
+    p.renderer.setSize(w,h); p.camera.aspect=w/h; p.camera.updateProjectionMatrix();
+  }
+});
+</script>
+</body>
+</html>
