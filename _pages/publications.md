@@ -5,11 +5,28 @@ author_profile: true
 layout: splash
 
 selected_publications:
+  - image_path: /assets/images/miam/miam_main.png
+    alt: "MIAM"
+    title: "MIAM: Modality Imbalance-Aware Masking for Multimodal Ecological Applications"
+    excerpt: >
+      **Robin Zbinden**\*, Wesley Monteith-Finas\*, Gencer Sumbul, Nina van Tiel, Chiara Vanalli, Devis Tuia <br>
+      *ICLR* (2026) <br>
+      <span class="tight-links">
+          **🌐 <a href="/publications/miam/" target="_blank"
+          rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
+          **📄 <a href="https://openreview.net/forum?id=oljjAkgZN4" target="_blank"
+          rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://github.com/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Data</a>**
+      </span>
+  
   - image_path: /assets/images/masksdm/MaskSDM_applications.png
     alt: "MaskSDM"
     title: "MaskSDM with Shapley values to improve flexibility, robustness and explainability in species distribution modelling"
     excerpt: >
-      **Robin Zbinden**, Devis Tuia, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
+      **Robin Zbinden**, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
       *Methods in Ecology and Evolution* (2025) <br>
       <span class="tight-links">
           **🌐 <a href="/publications/masksdm/" target="_blank"
@@ -77,6 +94,23 @@ selected_publications:
 
 publications:
 
+  - image_path: /assets/images/miam/miam_main.png
+    alt: "MIAM"
+    title: "MIAM: Modality Imbalance-Aware Masking for Multimodal Ecological Applications"
+    excerpt: >
+      **Robin Zbinden**\*, Wesley Monteith-Finas\*, Gencer Sumbul, Nina van Tiel, Chiara Vanalli, Devis Tuia <br>
+      *ICLR* (2026) <br>
+      <span class="tight-links">
+          **🌐 <a href="/publications/miam/" target="_blank"
+          rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
+          **📄 <a href="https://openreview.net/forum?id=oljjAkgZN4" target="_blank"
+          rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://github.com/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Data</a>**
+      </span>
+      
   - image_path: /assets/images/CISO/CISO_overview_dataset.png
     alt: "CISO"
     title: "CISO: Species Distribution Modeling Conditioned on Incomplete Species Observations"
@@ -122,7 +156,7 @@ publications:
     alt: "MaskSDM"
     title: "MaskSDM with Shapley values to improve flexibility, robustness and explainability in species distribution modelling"
     excerpt: >
-      **Robin Zbinden**, Devis Tuia, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
+      **Robin Zbinden**, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
       *Methods in Ecology and Evolution* (2025) <br>
       <span class="tight-links">
           **🌐 <a href="/publications/masksdm/" target="_blank"

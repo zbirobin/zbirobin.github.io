@@ -4,8 +4,25 @@ permalink: /teachings/
 author_profile: True
 layout: single
 ---
+## Master's students I have supervised at EPFL
 
-**Courses I have assisted at EPFL**  
+- **[Wesley Monteith-Finas](https://www.linkedin.com/in/wesley-monteith/){:target="_blank"}** (2025) <br/> 
+  - Semester project + research assistant: An Image is NotWorth 72 Time Steps? Sentinel-2 Imagery in
+Deep, Multi-Modal, Masked Species Distribution Modeling
+   <br/>
+  - [Publication at ICLR 2026](https://openreview.net/forum?id=oljjAkgZN4){:target="_blank"} <br/>
+
+- **[Julie Charlet](https://www.linkedin.com/in/juliecharlet/){:target="_blank"}** (2024-2025) <br/> 
+  - Semester project: Time Series Tokenization Methods for Species Distribution Modelling with Deep Learning
+   <br/>
+  - [Abstract at EGU 2025](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://meetingorganizer.copernicus.org/EGU25/EGU25-11949.html%3Fpdf&ved=2ahUKEwirnNuFleiSAxU5g_0HHVlECBwQFnoECBsQAQ&usg=AOvVaw1RPGgJRDVDlYSj4O0xLWJ5){:target="_blank"} <br/>
+
+- **[Paul Oliver](https://applicationspub.unil.ch/interpub/noauth/php/Un/UnPers.php?PerNum=1283386&LanCode=37){:target="_blank"}** (2023-2024) <br/> 
+  - Semester project: Species Distribution Modeling with Meta-learning
+   <br/>
+  - Current position: Doctoral student at UNIL (since 2025) <br/>
+
+## Courses I have assisted at EPFL 
 *(SA = Student Assistant, TA = Teaching Assistant)*
 
 - **[Machine learning (CS-433)](https://edu.epfl.ch/coursebook/en/machine-learning-CS-433){:target="_blank"}** <br/>

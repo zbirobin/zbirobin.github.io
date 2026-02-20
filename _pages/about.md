@@ -10,11 +10,28 @@ redirect_from:
   - /index.html
 
 selected_publications:
+  - image_path: /assets/images/miam/miam_main.png
+    alt: "MIAM"
+    title: "MIAM: Modality Imbalance-Aware Masking for Multimodal Ecological Applications"
+    excerpt: >
+      **Robin Zbinden**\*, Wesley Monteith-Finas\*, Gencer Sumbul, Nina van Tiel, Chiara Vanalli, Devis Tuia <br>
+      *ICLR* (2026) <br>
+      <span class="tight-links">
+          **🌐 <a href="/publications/miam/" target="_blank"
+          rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
+          **📄 <a href="https://openreview.net/forum?id=oljjAkgZN4" target="_blank"
+          rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://github.com/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
+          rel="noopener noreferrer">Data</a>**
+      </span>
+      
   - image_path: /assets/images/masksdm/MaskSDM_applications.png
     alt: "MaskSDM"
     title: "MaskSDM with Shapley values to improve flexibility, robustness and explainability in species distribution modelling"
     excerpt: >
-      **Robin Zbinden**, Devis Tuia, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
+      **Robin Zbinden**, Nina van Tiel, Gencer Sumbul, Chiara Vanalli, Benjamin Kellenberger, Devis Tuia <br>
       *Methods in Ecology and Evolution* (2025) <br>
       <span class="tight-links">
           **🌐 <a href="/publications/masksdm/" target="_blank"
@@ -81,13 +98,13 @@ selected_publications:
       </span>
 ---
 
-I am a **PhD candidate at [EPFL](https://www.epfl.ch/en/){:target="_blank"}**, Switzerland, supervised by **[Devis Tuia](https://scholar.google.com/citations?user=p3iJiLIAAAAJ&hl=en){:target="_blank"}**. My research focuses on applying recent **machine learning** methods to **ecology and conservation**. In particular, I study how deep learning can support large-scale biodiversity monitoring by improving **species distribution models**. As part of this work, I developed **[MaskSDM](/publications/masksdm/){:target="_blank"}** and co-developed **[CISO](/publications/ciso/){:target="_blank"}**, two new deep learning frameworks for species distribution modeling. More broadly, while I remain critical of certain applications of AI, I am enthusiastic about the role it can play in monitoring the Earth and helping preserve its ecological diversity. In this regard, I am **one of the organizers of the [AI+Environment Summit](https://ai-environment-summit.com/){:target="_blank"}**, a full-day event designed to inspire, ignite, and innovate work in AI for the environment.
+I am a **PhD candidate at [EPFL](https://www.epfl.ch/en/){:target="_blank"}**, Switzerland, supervised by **[Devis Tuia](https://scholar.google.com/citations?user=p3iJiLIAAAAJ&hl=en){:target="_blank"}**. My research focuses on applying recent **machine learning** methods to **ecology and conservation**. In particular, I study how deep learning can support large-scale biodiversity monitoring by improving **species distribution models**. As part of this work, I developed **[MaskSDM](/publications/masksdm/){:target="_blank"}** and co-developed **[CISO](/publications/ciso/){:target="_blank"}**, two new deep learning frameworks for species distribution modeling. Recently, I proposed **[MIAM](/publications/miam/){:target="_blank"}**, a novel approach for handling modality imbalance and missing inputs in multimodal ecological applications. More broadly, while I remain critical of certain applications of AI, I am enthusiastic about the role it can play in monitoring the Earth and helping preserve its ecological diversity. In this regard, I am **one of the organizers of the [AI+Environment Summit](https://ai-environment-summit.com/){:target="_blank"}**, a full-day event designed to inspire, ignite, and innovate work in AI for the environment.
 
-Before starting my PhD, I completed a **Master's degree in Data Science** and a **Bachelor's degree in Communication Systems** at EPFL. During my studies, I worked with several research groups, including the [Data Science Lab (DLAB)](https://dlab.epfl.ch/){:target="_blank"} of **Robert West** on analyzing [food consumption](https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1231070/full){:target="_blank"} at EPFL and the [Machine Learning and Optimization Lab (MLO)](https://www.epfl.ch/labs/mlo/){:target="_blank"} of **Martin Jaggi** on [text-to-image generation](https://arxiv.org/abs/2209.10948){:target="_blank"}. I also worked with the INDY Lab of **Patrick Thiran**, where I co-built the first version of [Climpact](https://climpact.ch/){:target="_blank"}, which led to a [publication](https://infoscience.epfl.ch/record/275472){:target="_blank"}. In addition, I interned at **Sony** in Stuttgart, working on [neural architecture search](https://openreview.net/forum?id=BIcg6iub1Z5){:target="_blank"}. I also served as a student assistant for several courses: see [Teachings](/teachings/){:target="_blank"}.
+Before starting my PhD, I completed a **Master's degree in Data Science** and a **Bachelor's degree in Communication Systems** at EPFL. During my studies, I worked with several research groups, including the [Data Science Lab (DLAB)](https://dlab.epfl.ch/){:target="_blank"} of **Robert West** on analyzing [food consumption](https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1231070/full){:target="_blank"} at EPFL and the [Machine Learning and Optimization Lab (MLO)](https://www.epfl.ch/labs/mlo/){:target="_blank"} of **Martin Jaggi** on [text-to-image generation](https://arxiv.org/abs/2209.10948){:target="_blank"}. I also worked with the INDY Lab of **Patrick Thiran**, where I co-built the first version of [Climpact](https://climpact.ch/){:target="_blank"}, which led to a [publication](https://infoscience.epfl.ch/record/275472){:target="_blank"}. In addition, I interned at **Sony** in Stuttgart, working on [neural architecture search](https://openreview.net/forum?id=BIcg6iub1Z5){:target="_blank"}. Alongside my research activities, I supervised several Master's students and served as an assistant for multiple courses (see [Teachings](/teachings/){:target="_blank"}).
 
 ## News
-- **Feb 2026** — I will present the role and career path of an AI enginneer to high school students at the [Forum Horizon](https://www.forum-horizon.ch/fr/) at [UNIL](https://www.unil.ch/) in Lausanne 🇨🇭
-- **Jan 2026** — **[MIAM](https://openreview.net/forum?id=oljjAkgZN4) has been accepted at ICLR 2026 🇧🇷 More is coming soon, stay tuned! 👀**
+- **Feb 2026** — Our new approach for multimodal ecological applications, called [MIAM](/publications/miam/), has been accepted at ICLR 2026. See you in Brazil 🇧🇷**
+- **Feb 2026** — I presented my work and career path as an AI enginneer to high school students both at the [Forum Formation](https://www.vs.ch/web/osp/forum) in Sierre and at the [Forum Horizon](https://www.forum-horizon.ch/fr/) at [UNIL](https://www.unil.ch/) in Lausanne 🇨🇭
 - **Jan 2026** — I presented [CISO](/publications/ciso/) at the [TIBS conference](https://conferences.au.dk/tibs-aarhus-2026) in Aarhus 🇩🇰
 - **Dec 2025** — Our [CISO](/publications/ciso/) paper has been accepted at *Methods in Ecology and Evolution* 🎉
 - **Nov 2025** — Our [MaskSDM](/publications/masksdm/) paper is now published in *Methods in Ecology and Evolution* 🎉
