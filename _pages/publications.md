@@ -130,6 +130,23 @@ publications:
           rel="noopener noreferrer">Poster</a>**
         </span>
 
+  - image_path: /assets/images/seasonal_monarchs/seasonal_monarchs.png
+    alt: "Seasonal modeling of monarch butterfly migration"
+    title: "Migrating in a warming world: A deep learning approach to predict pan-American seasonal shifts in the monarch butterfly niche"
+    excerpt: >
+      Chiara Vanalli, **Robin Zbinden**, Nina van Tiel, Devis Tuia <br>
+      *Accepted in Global Change Biology* (2026) <br>
+      <span class="tight-links">
+          **📄 <a href="https://www.biorxiv.org/content/10.1101/2025.06.25.661455v1" target="_blank"
+            rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://figshare.com/s/4f144c56aaa72021d030" target="_blank"
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **💽 <a href="https://figshare.com/s/4f144c56aaa72021d030" target="_blank" 
+          rel="noopener noreferrer">Data</a> &nbsp;·&nbsp;**
+          **🏞️ <a href="/assets/pdf/monarch/monarch_poster.pdf" target="_blank"
+          rel="noopener noreferrer">Poster</a>**
+      </span>
+
   - image_path: /assets/images/multi_scale_EI/multi_scale_EI.png
     alt: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
     title: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
@@ -138,17 +155,6 @@ publications:
       *Preprint* (2025) <br>
       <span class="tight-links">
           **📄 <a href="https://www.biorxiv.org/content/10.1101/2025.10.15.682577v1" target="_blank"
-            rel="noopener noreferrer">Paper</a>**
-      </span>
-
-  - image_path: /assets/images/seasonal_monarchs/seasonal_monarchs.png
-    alt: "Seasonal modeling of monarch butterfly migration"
-    title: "Migrating in a warming world: A deep learning approach to predict pan-American seasonal shifts in the monarch butterfly niche"
-    excerpt: >
-      Chiara Vanalli, **Robin Zbinden**, Nina van Tiel, Devis Tuia <br>
-      *Preprint* (2025) <br>
-      <span class="tight-links">
-          **📄 <a href="https://www.biorxiv.org/content/10.1101/2025.06.25.661455v1" target="_blank"
             rel="noopener noreferrer">Paper</a>**
       </span>
 
