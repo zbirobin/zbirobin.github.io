@@ -195,7 +195,7 @@ custom_js:
 </section>
 
 <!-- Overview -->
-<section class="section hero is-light" style="padding-top: 0.5rem;">
+<section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
