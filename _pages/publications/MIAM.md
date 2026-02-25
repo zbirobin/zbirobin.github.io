@@ -175,8 +175,8 @@ custom_js:
 
         <div class="content has-text-justified">
           <p>
-            We introduce <strong>MIAM (Modality Imbalance-Aware Masking)</strong>, a dynamic, score-driven masking strategy that adapts during training to counter modality imbalance using modality-specific learning dynamics.
-            Models trained with MIAM can be evaluated under <strong><em>any combination of input tokens</em></strong>, enabling fine-grained analysis of modality and token importance while improving robustness to missing data in ecological applications.
+            We introduce <strong>MIAM (Modality Imbalance-Aware Masking)</strong>, a dynamic masking strategy that counteracts modality imbalance using modality-specific performance and learning signals.
+            Models trained with MIAM can be evaluated under <strong><em>any combination of input <span class="token-term" data-token-definition="A token is the smallest input unit processed by the model (for example, one tabular variable, one time step, or one image patch).">tokens</span></em></strong>, supporting fine-grained contribution analysis across and within modalities, while improving robustness to missing data in ecological applications.
           </p>
         </div>
 
@@ -184,9 +184,9 @@ custom_js:
           <img src="{{ '/assets/images/miam/miam_main.png' | relative_url }}" alt="MIAM main figure" style="max-width: 100%; height: auto;">
           <p class="is-size-9" style="margin-top: 8px;">
             <strong>Overview of MIAM.</strong>
-            <strong>(Left)</strong> Each modality token is masked with probability <strong>p</strong><sub>m</sub>, sampled from a mixture of product Beta distributions.
-            <strong>(Right)</strong> The distribution is modulated by ρ<sub>s<sub>m</sub></sub> and ρ<sub>d<sub>m</sub></sub>, derived from per-modality performance s<sub>m</sub> and its absolute derivative d<sub>m</sub>.
-            Modalities that perform strongly and learn stably are masked more often to mitigate modality imbalance.
+            <strong>(Left)</strong> Each token of modality <em>m</em> is masked with probability <strong>p</strong><em><sub>m</sub></em>, sampled from a mixture of product beta distributions.
+            <strong>(Right)</strong> The distribution parameters are modulated by <em>ρ<sub>s<sub>m</sub></sub></em> and <em>ρ<sub>d<sub>m</sub></sub></em>, derived from the per-modality performance <em>s<sub>m</sub></em> and its absolute derivative <em>d<sub>m</sub></em>.
+            Modalities with strong and stable performance are masked more frequently to mitigate modality imbalance.
           </p>
         </div>
       </div>
@@ -204,21 +204,21 @@ custom_js:
         <div class="content has-text-justified">
           <p>
             Ecological modeling underpins conservation, climate adaptation, and environmental management.
-            Modern datasets are inherently <strong>multimodal</strong>, combining heterogeneous signals such as environmental tabular variables 📊, climate time series 📈, audio 🔊, natural images 📷, and satellite imagery 🛰️.
+            Modern ecological datasets are inherently <strong>multimodal</strong>, integrating heterogeneous signals such as environmental tabular variables 📊, climate time series 📈, bioacoustics 🔊, natural images 📷, and satellite imagery 🛰️.
           </p>
 
           <p>
-            Learning and inferring from such data is challenging because:
+            Learning and inference in this setting are challenging because:
           </p>
 
           <ul>
-            <li><strong>inputs are often incomplete</strong>, with entire modalities or partial observations missing;</li>
+            <li><strong>inputs are often incomplete</strong>, with missing data occurring either at the modality level or within modalities;</li>
             <li><strong>modalities contribute unequally</strong>, leading to modality imbalance during optimization;</li>
-            <li><strong>interpretability is crucial</strong>, both across modalities and within each modality.</li>
+            <li><strong>interpretability is essential</strong>, both across and within modalities.</li>
           </ul>
 
           <p>
-            Masking strategies provide a principled way to improve robustness to missing data while enabling structured analysis of modality contributions.
+            By exposing models to incomplete inputs during training, <strong>masking strategies</strong> provide a principled approach to improving robustness to missing data while enabling structured analysis of input contributions.
           </p>
         </div>
 
@@ -232,18 +232,52 @@ custom_js:
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Why MIAM?</h2>
+        <h2 class="title is-3">Limitations of Existing Masking Strategies</h2>
 
         <div class="content has-text-justified">
           <p>
-            Most multimodal masking strategies are fixed and underexplore the space of possible input subsets. 
-            As a result, they improve robustness only partially and do not explicitly address modality imbalance, 
+            However, most multimodal masking strategies are fixed and underexplore the space of possible input subsets. 
+            As a result, they only partially improve robustness and fail to explicitly address modality imbalance, 
             where dominant modalities hinder the learning of complementary ones.
+          </p>
+          <style>
+            .token-term {
+              text-decoration: underline dotted;
+              text-underline-offset: 2px;
+              cursor: help;
+            }
+            #token-definition-tooltip {
+              position: fixed;
+              z-index: 9999;
+              max-width: 300px;
+              padding: 0.55rem 0.7rem;
+              border-radius: 8px;
+              border: 1px solid #d8d8d8;
+              background: #ffffff;
+              color: #1a1a1a;
+              font-size: 0.9rem;
+              line-height: 1.35;
+              box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+              pointer-events: none;
+              opacity: 0;
+              transform: translateY(3px);
+              transition: opacity 100ms ease, transform 100ms ease;
+            }
+            #token-definition-tooltip.is-visible {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          </style>
+          <div id="token-definition-tooltip" role="tooltip" aria-hidden="true"></div>
+          <p>
+            First, we formalize masking strategies as <strong>probability distributions over the unit hypercube</strong>, 
+            where each dimension corresponds to a modality. 
+            With <em>M</em> modalities, we define a masking probability vector p = (p<sub><em>1</em></sub>, ..., p<sub><em>M</em></sub>) ∈ [0,1]<sup><em>M</em></sup>, where p<sub><em>m</em></sub> denotes the probability of masking a <span class="token-term" data-token-definition="A token is the smallest input unit processed by the model (for example, one tabular variable, one time step, or one image patch).">token</span> of modality <em>m</em>.
+            A masking strategy is then a probability distribution 𝒟 over [0,1]<sup><em>M</em></sup> from which p is sampled during training.
           </p>
 
           <p>
-            We formalize masking strategies as <strong>probability distributions over the unit hypercube</strong>, 
-            where each dimension corresponds to a modality. Existing approaches can be interpreted within this unified framework:
+            Existing approaches can be interpreted within this unified framework:
           </p>
         </div>
       </div>
@@ -252,14 +286,35 @@ custom_js:
 </section>
 
 <section class="section pt-0" style="padding-bottom: 0.5rem;">
-  <div style="display: flex; justify-content: center;">
-    <iframe src="/assets/html/hypercubes.html"
-            style="width: 80%; max-width: 900px; height: 1300px; border: none;"
+  <div style="display: flex; justify-content: center; width: 100%;">
+    <iframe id="hypercubes-frame"
+            src="/assets/html/hypercubes.html"
+            style="width: 100%; max-width: 900px; min-height: 1300px; border: none;"
             frameborder="0"
             scrolling="no">
     </iframe>
   </div>
 </section>
+
+<script>
+(function () {
+  const frame = document.getElementById('hypercubes-frame');
+  if (!frame) return;
+
+  function setFrameHeight(height) {
+    const h = Number(height);
+    if (!Number.isFinite(h) || h <= 0) return;
+    frame.style.height = `${Math.ceil(h)}px`;
+  }
+
+  window.addEventListener('message', function (event) {
+    if (!event.data || typeof event.data !== 'object') return;
+    if (!frame.contentWindow || event.source !== frame.contentWindow) return;
+    if (!Object.prototype.hasOwnProperty.call(event.data, 'iframeHeight')) return;
+    setFrameHeight(event.data.iframeHeight);
+  });
+})();
+</script>
 
 <section class="section">
   <div class="container is-max-desktop">
@@ -269,33 +324,71 @@ custom_js:
 
         <div class="content has-text-justified">
           <p>
-            MIAM provides a principled alternative built on three properties:
+            MIAM provides a principled alternative built on three key properties:
           </p>
 
           <ul>
             <li>
-              <strong>Full support:</strong> We sample masking probabilities over the entire 
-              hypercube, allowing <em>any</em> combination of masked and unmasked modalities 
+              <strong>Full support:</strong>  Masking probabilities are sampled over the entire 
+              hypercube, allowing <em>any</em> combination of masked and unmasked tokens 
               to occur during training.
             </li>
 
             <li>
-              <strong>Corner prioritization:</strong> Instead of sampling uniformly, MIAM uses a 
-              <em>corner-anchored mixture of product Beta distributions</em>. Each mixture component 
+              <strong>Corner prioritization:</strong> Rather than sampling uniformly, MIAM uses a 
+              <em>corner-anchored mixture of product beta distributions</em>. Each mixture component 
               concentrates probability mass near one of the <em>2<sup>M</sup></em> hypercube corners, 
-              encouraging training on informative subsets (e.g., single-modality or near-complete inputs).
+              promoting training on informative subsets (e.g., single-modality or near-complete inputs).
             </li>
 
             <li>
               <strong>Imbalance awareness:</strong> MIAM dynamically adjusts the sharpness of these 
-              Beta distributions based on modality-specific learning dynamics. Modalities that 
-              achieve high unimodal performance and exhibit stable learning are masked more frequently, encouraging the model to focus on under-optimized or slower-learning modalities.
+              beta distributions based on modality-specific learning dynamics. Modalities with 
+              high and stable unimodal performance are masked more frequently, encouraging 
+              the model to better optimize slower-learning or underutilized modalities.
             </li>
           </ul>
+
+          <p>
+            The following interactive visualization illustrates how these principles translate into a dynamic masking distribution during training:
+          </p>
+
         </div>
       </div>
     </div>
   </div>
+
+
+<section class="section pt-0" style="padding-bottom: 0.5rem;">
+  <div style="display: flex; justify-content: center; width: 100%;">
+    <iframe id="miam-interactive-frame"
+            src="/assets/html/miam_interactive.html"
+            style="width: 100%; max-width: 900px; min-height: 1100px; border: none;"
+            frameborder="0"
+            scrolling="no">
+    </iframe>
+  </div>
+</section>
+
+<script>
+(function () {
+  const frame = document.getElementById('miam-interactive-frame');
+  if (!frame) return;
+
+  function setFrameHeight(height) {
+    const h = Number(height);
+    if (!Number.isFinite(h) || h <= 0) return;
+    frame.style.height = `${Math.ceil(h)}px`;
+  }
+
+  window.addEventListener('message', function (event) {
+    if (!event.data || typeof event.data !== 'object') return;
+    if (!frame.contentWindow || event.source !== frame.contentWindow) return;
+    if (!Object.prototype.hasOwnProperty.call(event.data, 'iframeHeight')) return;
+    setFrameHeight(event.data.iframeHeight);
+  });
+})();
+</script>
 </section>
 
 
@@ -308,14 +401,14 @@ custom_js:
 
         <div class="content has-text-justified">
           <ul>
-            <li><strong>Dynamic, imbalance-aware masking (MIAM)</strong> that reduces modality imbalance and promotes complementary multimodal learning ⚖️ </li>
-            <li><strong>Consistent improvements on ecological multimodal benchmarks</strong>, especially for under-optimized modalities 📈 </li>
-            <li><strong>Fine-grained interpretability</strong> across and within modalities (variables, time segments, image regions) 🔎 </li>
+            <li><strong>Dynamic, imbalance-aware masking (MIAM)</strong> that mitigates modality imbalance, promotes complementary multimodal learning, and improves robustness to missing data in ecological applications ⚖️ </li>
+            <li><strong>Consistent improvements on ecological multimodal benchmarks</strong> (GeoPlant and TaxaBench), especially for under-optimized modalities 📊 </li>
+            <li><strong>Fine-grained interpretability</strong> across and within modalities (variables, time segments, image patches) 🔎 </li>
           </ul>
 
-          <p>
-            For full methodological details and experimental results, see the 
-            <a href="https://openreview.net/forum?id=oljjAkgZN4" target="_blank">paper 📄</a>.
+          <p><strong>
+            For full methodological details and experimental results, read the 
+            <a href="https://openreview.net/forum?id=oljjAkgZN4" target="_blank">paper 📄</a></strong>
           </p>
         </div>
       </div>
@@ -370,3 +463,41 @@ custom_js:
 <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
 
 <!-- End of Statcounter Code -->
+
+<script>
+(function () {
+  const tokenDefinitionTooltip = document.getElementById('token-definition-tooltip');
+  if (!tokenDefinitionTooltip) return;
+
+  const OFFSET_X = 14;
+  const OFFSET_Y = 14;
+
+  function placeTooltip(event) {
+    const x = event.clientX + OFFSET_X;
+    const y = event.clientY + OFFSET_Y;
+    const pad = 10;
+    const maxX = window.innerWidth - tokenDefinitionTooltip.offsetWidth - pad;
+    const maxY = window.innerHeight - tokenDefinitionTooltip.offsetHeight - pad;
+    tokenDefinitionTooltip.style.left = `${Math.max(pad, Math.min(x, maxX))}px`;
+    tokenDefinitionTooltip.style.top = `${Math.max(pad, Math.min(y, maxY))}px`;
+  }
+
+  document.querySelectorAll('.token-term').forEach((el) => {
+    el.addEventListener('mouseenter', (event) => {
+      const definition = el.getAttribute('data-token-definition');
+      if (!definition) return;
+      tokenDefinitionTooltip.textContent = definition;
+      tokenDefinitionTooltip.classList.add('is-visible');
+      tokenDefinitionTooltip.setAttribute('aria-hidden', 'false');
+      placeTooltip(event);
+    });
+
+    el.addEventListener('mousemove', placeTooltip);
+
+    el.addEventListener('mouseleave', () => {
+      tokenDefinitionTooltip.classList.remove('is-visible');
+      tokenDefinitionTooltip.setAttribute('aria-hidden', 'true');
+    });
+  });
+})();
+</script>

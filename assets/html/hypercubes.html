@@ -271,7 +271,7 @@
 <div class="figure-wrap">
 
   <div class="fig-header">
-    <h2>Masking Strategies as Distributions over the Unit Hypercube</h2>
+    <h2>Masking Strategies as Probability Distributions over the Unit Hypercube</h2>
   </div>
 
   <p class="fig-subtitle">
@@ -698,7 +698,7 @@ document.getElementById('caption').innerHTML=
   `<b>(d)</b>&thinsp;Modality dropout with fixed probability. `+
   `<b>(e)</b>&thinsp;OPM (dynamic masking): modality&thinsp;3 is never masked. `+
   `<b>(f)</b>&thinsp;Uniform hypercube: independent p<sub>m</sub>&thinsp;∼&thinsp;𝒰(0,1) per modality for full support. `+
-  `<b>(g)</b>&thinsp;Beta hypercube: mixture of product-Beta distributions to prioritise corners. `+
+  `<b>(g)</b>&thinsp;Beta hypercube: mixture of product-Beta distributions to prioritize corners. `+
   `<b>(h)</b>&thinsp;MIAM (dynamic masking): Beta hypercube with imbalance-aware adjustments, `+
   `causing modality&thinsp;3 to be masked less often than the others.`;
 
@@ -720,7 +720,12 @@ window.addEventListener('resize',()=>{
     const w=p.container.clientWidth,h=210;
     p.renderer.setSize(w,h); p.camera.aspect=w/h; p.camera.updateProjectionMatrix();
   }
+  reportHeight();
 });
+
+// postMessage for iframe auto-height
+function reportHeight(){ window.parent.postMessage({iframeHeight:document.body.scrollHeight},'*'); }
+requestAnimationFrame(()=>{ reportHeight(); setTimeout(reportHeight,200); setTimeout(reportHeight,600); });
 </script>
 </body>
 </html>

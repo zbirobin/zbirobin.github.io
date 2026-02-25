@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Interact with MIAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #1a1a2e;
+  --ink-mid:   #3d3d5c;
+  --ink-light: #7a7a9a;
+  --paper:     #fafaf8;
+  --paper-2:   #f0f0ec;
+  --rule:      #ddddd5;
+  --accent:    #7c4fa0;
+  --accent-2:  #b88fd4;
+  --accent-bg: #f3edf8;
+
+  /* Modality colours — matching the image: blue, red/pink, green */
+  --m1: #5b8dd9;
+  --m2: #c05070;
+  --m3: #4a9068;
+
+  --m1-light: #aac5ef;
+  --m2-light: #e0a0b0;
+  --m3-light: #9eceb4;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Crimson Pro', Georgia, serif;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 36px 28px 40px;
+}
+
+/* ── Header ── */
+h2 {
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-size: 1.15rem;
+  color: var(--ink-light);
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.subtitle-rule { flex:1; height:1px; background:var(--rule); margin: 0 8px; }
+.hint-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--ink-light);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 3px 10px 4px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Main two-column layout ── */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+/* ── Panel cards ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 6px 18px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+.card-header {
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.card-sub {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  font-style: italic;
+}
+.card-body { padding: 0; }
+
+/* ── Performance chart ── */
+#perfChart {
+  display: block;
+  width: 100%;
+  height: 420px;
+}
+
+/* ── Hypercube canvas ── */
+#cubeCanvas {
+  display: block;
+  width: 100% !important;
+  height: 376px !important;
+  cursor: grab;
+}
+#cubeCanvas:active { cursor: grabbing; }
+
+.cube-controls {
+  padding: 10px 16px 8px;
+  border-top: 1px solid var(--rule);
+  background: var(--paper);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--ink-mid);
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 4px 12px 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  letter-spacing: 0.04em;
+}
+.btn-reset:hover { background:var(--accent-bg); border-color:var(--accent-2); color:var(--accent); }
+.btn-reset svg { width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+
+/* ── Controls panel ── */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.controls-full {
+  grid-column: 1 / -1;
+}
+
+.ctrl-section {
+  padding: 16px 18px;
+}
+.ctrl-section + .ctrl-section {
+  border-top: 1px solid var(--rule);
+}
+.ctrl-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Epoch slider special styling */
+.epoch-wrap {
+  position: relative;
+  padding-bottom: 6px;
+}
+.epoch-track {
+  position: relative;
+  height: 6px;
+  background: var(--paper-2);
+  border-radius: 3px;
+  margin: 8px 0 14px;
+  cursor: pointer;
+}
+.epoch-fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 3px;
+  pointer-events: none;
+  transition: width 0.05s;
+}
+.epoch-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px; height: 18px;
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(124,79,160,0.3);
+  cursor: grab;
+  transition: transform 0.1s, box-shadow 0.1s;
+  z-index: 2;
+}
+.epoch-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 2px 8px rgba(124,79,160,0.4); }
+.epoch-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--ink-light);
+}
+
+/* Generic sliders */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.slider-row:last-child { margin-bottom: 0; }
+.slider-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  min-width: 20px;
+  flex-shrink: 0;
+}
+.slider-name em { font-style: italic; font-family: Georgia, serif; font-size: 0.92rem; }
+input[type=range] {
+  -webkit-appearance: none;
+  flex: 1;
+  height: 5px;
+  background: var(--paper-2);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(124,79,160,0.25);
+  transition: transform 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.slider-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.80rem;
+  color: var(--accent);
+  min-width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.stat-chip {
+  flex: 1;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.stat-chip .stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-light);
+  letter-spacing: 0.06em;
+  display: block;
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--rule);
+}
+.stat-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4px;
+}
+.stat-metric-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink-light);
+  font-style: italic;
+  text-align: left;
+  flex-shrink: 0;
+}
+.stat-metric-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* modality colour dots */
+.m1 { color: var(--m1); }
+.m2 { color: var(--m2); }
+.m3 { color: var(--m3); }
+.dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; vertical-align:middle; }
+.dot-1 { background: var(--m1); }
+.dot-2 { background: var(--m2); }
+.dot-3 { background: var(--m3); }
+
+/* ── Caption ── */
+.caption {
+  font-size: 1.0rem;
+  color: var(--ink-mid);
+  line-height: 1.65;
+  font-weight: 300;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  margin-top: 4px;
+}
+.caption b { font-weight: 600; color: var(--ink); }
+.caption em { font-style: italic; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.card { animation: fadeUp 0.5s ease both; }
+.card:nth-child(1){ animation-delay:0.05s }
+.card:nth-child(2){ animation-delay:0.15s }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h2>Play with MIAM</h2>
+  <p class="subtitle">
+    Scrub through training to see how the distribution adapts to modality imbalance
+    <span class="subtitle-rule"></span>
+    <span class="hint-badge">⟳ drag · scroll to zoom</span>
+  </p>
+
+  <div class="main-layout">
+
+    <!-- Left: Performance chart -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Training dynamics</span>
+        <span class="card-sub">— drag the epoch marker</span>
+      </div>
+      <div class="card-body">
+        <canvas id="perfChart" height="420"></canvas>
+      </div>
+    </div>
+
+    <!-- Right: MIAM hypercube -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">MIAM distribution</span>
+        <span class="card-sub" id="cubeSubtitle">— at current epoch</span>
+      </div>
+      <div class="card-body">
+        <canvas id="cubeCanvas"></canvas>
+      </div>
+      <div class="cube-controls">
+        <button class="btn-reset" id="btnReset">
+          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.16 2.4L3 8"/><path d="M3 3v5h5"/></svg>
+          Reset view
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /.main-layout -->
+
+  <!-- Controls -->
+  <div class="card" style="margin-bottom:24px;">
+    <div class="card-body">
+
+      <!-- Epoch slider -->
+      <div class="ctrl-section controls-full">
+        <span class="ctrl-label">Epoch</span>
+        <div class="epoch-wrap">
+          <div class="epoch-track" id="epochTrack">
+            <div class="epoch-fill" id="epochFill"></div>
+            <div class="epoch-thumb" id="epochThumb"></div>
+          </div>
+          <div class="epoch-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule);">
+
+        <!-- κ and λ sliders -->
+        <div class="ctrl-section">
+          <span class="ctrl-label">Distribution parameters</span>
+          <div class="slider-row">
+            <span class="slider-name"><em>κ</em></span>
+            <input type="range" id="kappaSlider" min="1" max="20" step="0.5" value="10">
+            <span class="slider-val" id="kappaVal">10</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-name"><em>λ</em></span>
+            <input type="range" id="lambdaSlider" min="0" max="10" step="0.1" value="1">
+            <span class="slider-val" id="lambdaVal">1.00</span>
+          </div>
+        </div>
+
+        <!-- Live stats -->
+        <div class="ctrl-section" style="border-left:1px solid var(--rule);">
+          <span class="ctrl-label">Modality scores at epoch <span id="epochNum">50</span></span>
+          <div class="stats-row" id="statsRow"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p class="caption">
+    Interactive MIAM masking distribution for three modalities.
+    <b>Left:</b> Synthetic validation curves — modality&nbsp;1 <span class="dot dot-1"></span> converges rapidly to high performance,
+    modality&nbsp;2 <span class="dot dot-2"></span> converges more gradually, and
+    modality&nbsp;3 <span class="dot dot-3"></span> remains comparatively underperforming throughout training.
+
+    <b>Right:</b> Resulting MIAM distribution 
+    p&nbsp;=&nbsp;(p<sub>1</sub>,&nbsp;p<sub>2</sub>,&nbsp;p<sub>3</sub>), 
+    where p<sub>m</sub> denotes the probability of masking modality <em>m</em>, updated live. 5 000 samples are drawn from the distribution at each epoch.
+    <b>Bottom:</b> Adjust the epoch and the MIAM parameters.
+    The sharpness <em>κ</em> controls concentration toward the hypercube corners,
+    while <em>λ</em> determines the strength of imbalance correction.
+    Dominant modalities (high <em>s<sub>m</sub></em>, low <em>d<sub>m</sub></em>) are masked more frequently.
+    This behavior is reflected in the ratio
+    ρ<sub>s<sub>m</sub></sub>/ρ<sub>d<sub>m</sub></sub> = (s<sub>m</sub>/d<sub>m</sub>) / geo(s/d),
+    where geo(s/d) is the geometric mean of the per-modality ratios s<sub>m</sub>/d<sub>m</sub> across all modalities.
+    As shown in the statistics panel, the larger this ratio, the more strongly modality <em>m</em> is masked compared to a balanced strategy.
+    Adjusting the parameters illustrates how MIAM adapts to different training dynamics.
+  </p>
+
+</div><!-- /.wrap -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════════
+// 1. SYNTHETIC PERFORMANCE CURVES
+// Each modality follows a saturating curve: s(t) = S∞ · (1 − exp(−t/τ))
+// ══════════════════════════════════════════════════════
+const T_MAX = 100;
+const MODS = [
+  { name:'Modality 1', col:'#5b8dd9', colLight:'#aac5ef', Sinf:0.92, tau:18 },
+  { name:'Modality 2', col:'#c05070', colLight:'#e0a0b0', Sinf:0.74, tau:30 },
+  { name:'Modality 3', col:'#4a9068', colLight:'#9eceb4', Sinf:0.63, inflect:65, rate:0.18, earlyW:0.45, earlyTau:30 },
+];
+const EPS = 0.001;
+
+function perf(mod, t){
+  if(mod.inflect !== undefined){
+    // Blend: weighted sum of an early exponential rise + sigmoid
+    // earlyW controls how much initial slope to add
+    const sigmoid = mod.Sinf / (1 + Math.exp(-mod.rate * (t - mod.inflect)));
+    const early   = mod.Sinf * (1 - Math.exp(-t / mod.earlyTau));
+    return (1 - mod.earlyW) * sigmoid + mod.earlyW * early + EPS;
+  }
+  return mod.Sinf * (1 - Math.exp(-t / mod.tau)) + EPS;
+}
+function dpdt(mod, t){
+  if(mod.inflect !== undefined){
+    const sig  = 1 / (1 + Math.exp(-mod.rate * (t - mod.inflect)));
+    const dsig = mod.Sinf * mod.rate * sig * (1 - sig);
+    const dexp = mod.Sinf / mod.earlyTau * Math.exp(-t / mod.earlyTau);
+    return (1 - mod.earlyW) * dsig + mod.earlyW * dexp + EPS;
+  }
+  return mod.Sinf / mod.tau * Math.exp(-t / mod.tau) + EPS;
+}
+
+// ══════════════════════════════════════════════════════
+// 2. MIAM SAMPLING
+// ══════════════════════════════════════════════════════
+class RNG {
+  constructor(s){ this.s=s>>>0; }
+  next(){ this.s=(Math.imul(1664525,this.s)+1013904223)>>>0; return this.s/4294967296; }
+  normal(){ return Math.sqrt(-2*Math.log(this.next()+1e-12))*Math.cos(2*Math.PI*this.next()); }
+  gamma(a){
+    if(a<1) return this.gamma(1+a)*Math.pow(this.next(),1/a);
+    const d=a-1/3,c=1/Math.sqrt(9*d);
+    for(;;){
+      let x=this.normal(),v=1+c*x; if(v<=0)continue; v=v*v*v; const u=this.next();
+      if(u<1-0.0331*(x*x)*(x*x))return d*v;
+      if(Math.log(u)<0.5*x*x+d*(1-v+Math.log(v)))return d*v;
+    }
+  }
+  beta(a,b){ const ga=this.gamma(a),gb=this.gamma(b); return ga/(ga+gb); }
+}
+
+function sampleMIAM(N, kappa, lambda, sm, dm, seed=42){
+  const rng = new RNG(seed);
+  const M = 3;
+  // Geometric-mean normalisation
+  const geoS = Math.pow(sm.reduce((a,b)=>a*b,1), 1/M);
+  const geoD = Math.pow(dm.reduce((a,b)=>a*b,1), 1/M);
+  const rhoS = sm.map(s => s/geoS);
+  const rhoD = dm.map(d => d/geoD);
+  // Per-modality effective kappa multipliers
+  const sw = rhoS.map((rs,i) => Math.pow(rs / rhoD[i], lambda));
+
+  const corners = [
+    [0,0,0],[1,1,1],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1]
+  ];
+  const lg = 1/4, sm2 = 1/(2*(8-2));
+  const weights = corners.map((_,i) => i<2 ? lg : sm2);
+  const tot = weights.reduce((a,b)=>a+b,0);
+  const wt = weights.map(v=>v/tot);
+  const cdf=[]; let c=0; for(const wi of wt){c+=wi; cdf.push(c);}
+
+  const pts = new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const rv=rng.next(); let idx=cdf.length-1;
+    for(let j=0;j<cdf.length;j++){if(rv<cdf[j]){idx=j;break;}}
+    const [cx,cy,cz]=corners[idx];
+    // cx=0 → Beta(1, κ·sw^(-λ)) concentrated near 0 (mask less)
+    // cx=1 → Beta(κ·sw^λ, 1)   concentrated near 1 (mask more)
+    pts[i*3]   = cx===0 ? rng.beta(1, kappa*sw[0]) : rng.beta(kappa*sw[0], 1);
+    pts[i*3+1] = cy===0 ? rng.beta(1, kappa*sw[1]) : rng.beta(kappa*sw[1], 1);
+    pts[i*3+2] = cz===0 ? rng.beta(1, kappa*sw[2]) : rng.beta(kappa*sw[2], 1);
+  }
+  return pts;
+}
+
+// ══════════════════════════════════════════════════════
+// 3. PERFORMANCE CHART (Canvas 2D)
+// ══════════════════════════════════════════════════════
+const chartCanvas = document.getElementById('perfChart');
+const ctx2d = chartCanvas.getContext('2d');
+
+let currentEpoch = 50;
+
+// Stable chart dimensions — read once from parent, never from canvas itself
+const CHART_H = 420;
+let chartW = 0; // set on first draw and resize only
+
+function getChartW(){
+  // Read from the parent card-body, not the canvas (canvas offsetWidth inflates itself)
+  return Math.round(Math.max(200, Math.min(chartCanvas.parentElement.clientWidth || 500, 2000)));
+}
+
+function drawChart(epoch){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  const W = chartW || getChartW();
+  const H = CHART_H;
+  const pw_px = W * dpr;
+  const ph_px = H * dpr;
+  // Set pixel buffer size — but only update if actually changed (avoids reflow loop)
+  if(chartCanvas.width !== pw_px)  chartCanvas.width  = pw_px;
+  if(chartCanvas.height !== ph_px) chartCanvas.height = ph_px;
+  // Lock CSS size explicitly so the element never expands beyond W×H
+  chartCanvas.style.width  = W + 'px';
+  chartCanvas.style.height = H + 'px';
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const PAD = { top:28, right:24, bottom:110, left:62 };
+  const pw = W - PAD.left - PAD.right;
+  const ph = H - PAD.top  - PAD.bottom;
+
+  ctx2d.clearRect(0,0,W,H);
+
+  // background
+  ctx2d.fillStyle = '#fff';
+  ctx2d.fillRect(0,0,W,H);
+
+  // grid lines
+  ctx2d.strokeStyle = '#e8e8f0';
+  ctx2d.lineWidth = 1;
+  for(let i=0;i<=4;i++){
+    const y = PAD.top + ph*(1-i/4);
+    ctx2d.beginPath(); ctx2d.moveTo(PAD.left,y); ctx2d.lineTo(PAD.left+pw,y); ctx2d.stroke();
+  }
+  for(let i=0;i<=4;i++){
+    const x = PAD.left + pw*i/4;
+    ctx2d.beginPath(); ctx2d.moveTo(x,PAD.top); ctx2d.lineTo(x,PAD.top+ph); ctx2d.stroke();
+  }
+
+  // axes
+  ctx2d.strokeStyle = '#b0b0c0';
+  ctx2d.lineWidth = 1.5;
+  ctx2d.beginPath();
+  ctx2d.moveTo(PAD.left, PAD.top);
+  ctx2d.lineTo(PAD.left, PAD.top+ph);
+  ctx2d.lineTo(PAD.left+pw, PAD.top+ph);
+  ctx2d.stroke();
+
+  // axis arrows
+  ctx2d.fillStyle = '#b0b0c0';
+  // Y arrow
+  ctx2d.beginPath(); ctx2d.moveTo(PAD.left,PAD.top-2); ctx2d.lineTo(PAD.left-4,PAD.top+10); ctx2d.lineTo(PAD.left+4,PAD.top+10); ctx2d.closePath(); ctx2d.fill();
+  // X arrow
+  ctx2d.beginPath(); ctx2d.moveTo(PAD.left+pw+2,PAD.top+ph); ctx2d.lineTo(PAD.left+pw-8,PAD.top+ph-4); ctx2d.lineTo(PAD.left+pw-8,PAD.top+ph+4); ctx2d.closePath(); ctx2d.fill();
+
+  // axis labels
+  ctx2d.fillStyle = '#3d3d5c';
+  ctx2d.font = '600 15px "Crimson Pro",Georgia,serif';
+  ctx2d.textAlign = 'center';
+  ctx2d.fillText('Epoch', PAD.left + pw/2, PAD.top + ph + 36);
+  ctx2d.save(); ctx2d.translate(14, PAD.top + ph/2); ctx2d.rotate(-Math.PI/2);
+  ctx2d.fillText('Performance', 0, 0); ctx2d.restore();
+
+  // tick labels
+  ctx2d.font = '12px "DM Mono",monospace';
+  ctx2d.fillStyle = '#7a7a9a';
+  ctx2d.textAlign = 'center';
+  for(let i=0;i<=4;i++){
+    const x = PAD.left + pw*i/4;
+    ctx2d.fillText(Math.round(T_MAX*i/4), x, PAD.top+ph+16);
+  }
+  ctx2d.textAlign = 'right';
+  for(let i=0;i<=4;i++){
+    const y = PAD.top + ph*(1-i/4);
+    ctx2d.fillText((i/4).toFixed(2), PAD.left-8, y+4);
+  }
+
+  // helper: t → pixel coords
+  const tx = t => PAD.left + (t/T_MAX)*pw;
+  const ty = v => PAD.top  + ph*(1-v);
+
+  // draw curves
+  MODS.forEach(mod => {
+    // solid: s(t)
+    ctx2d.beginPath();
+    ctx2d.strokeStyle = mod.col;
+    ctx2d.lineWidth = 3;
+    ctx2d.lineJoin = 'round';
+    for(let t=0;t<=T_MAX;t+=0.5){
+      const x=tx(t), y=ty(perf(mod,t));
+      t===0 ? ctx2d.moveTo(x,y) : ctx2d.lineTo(x,y);
+    }
+    ctx2d.stroke();
+
+    // dashed: d(t) scaled for visibility — compute dMax numerically to handle all curve types
+    let dMax = 0;
+    for(let t=0; t<=T_MAX; t+=0.5){ const d=dpdt(mod,t); if(d>dMax) dMax=d; }
+    if(dMax < 1e-9) dMax = 1;
+    ctx2d.beginPath();
+    ctx2d.strokeStyle = mod.colLight;
+    ctx2d.lineWidth = 2;
+    ctx2d.setLineDash([7, 5]);
+    ctx2d.lineJoin = 'round';
+    for(let t=0;t<=T_MAX;t+=0.5){
+      const x=tx(t), y=ty(Math.min(dpdt(mod,t)/dMax * 0.6, 0.98));
+      t===0 ? ctx2d.moveTo(x,y) : ctx2d.lineTo(x,y);
+    }
+    ctx2d.stroke();
+    ctx2d.setLineDash([]);
+  });
+
+  // Epoch marker line
+  const ex = tx(epoch);
+  ctx2d.strokeStyle = '#7c4fa0';
+  ctx2d.lineWidth = 1.5;
+  ctx2d.setLineDash([4, 3]);
+  ctx2d.beginPath(); ctx2d.moveTo(ex, PAD.top); ctx2d.lineTo(ex, PAD.top+ph); ctx2d.stroke();
+  ctx2d.setLineDash([]);
+
+  // Epoch marker dots on each curve
+  MODS.forEach(mod => {
+    const sv = perf(mod, epoch);
+    const x = ex, y = ty(sv);
+    ctx2d.beginPath();
+    ctx2d.arc(x, y, 5.5, 0, Math.PI*2);
+    ctx2d.fillStyle = mod.col;
+    ctx2d.fill();
+    ctx2d.strokeStyle = '#fff';
+    ctx2d.lineWidth = 1.5;
+    ctx2d.stroke();
+  });
+
+  // Legend — two rows below the Epoch label
+  const legRow1Y = PAD.top + ph + 60;  // modalities row
+  const legRow2Y = PAD.top + ph + 82;  // sm / dm type row
+
+  // Row 1: three modalities, evenly spaced
+  const slotW = pw / 3;
+  ctx2d.font = '13px "Crimson Pro",Georgia,serif';
+  MODS.forEach((mod, i) => {
+    const cx = PAD.left + slotW * i + slotW / 2;
+    // solid swatch
+    ctx2d.fillStyle = mod.col;
+    ctx2d.fillRect(cx - 44, legRow1Y - 5, 16, 3.5);
+    // dashed swatch
+    ctx2d.strokeStyle = mod.colLight;
+    ctx2d.lineWidth = 2;
+    ctx2d.setLineDash([5,4]);
+    ctx2d.beginPath(); ctx2d.moveTo(cx - 24, legRow1Y - 3.5); ctx2d.lineTo(cx - 24 + 12, legRow1Y - 3.5); ctx2d.stroke();
+    ctx2d.setLineDash([]);
+    // label
+    ctx2d.fillStyle = '#3d3d5c';
+    ctx2d.textAlign = 'left';
+    ctx2d.fillText(mod.name, cx - 8, legRow1Y);
+  });
+
+  // ─────────────────────────────
+// Row 2: two centered lines,
+// aligned to same left edge
+// ─────────────────────────────
+
+ctx2d.font = 'italic 12px "Crimson Pro",Georgia,serif';
+ctx2d.fillStyle = '#7a7a9a';
+
+const midX = PAD.left + pw / 2;
+
+// Add spacing below Row 1
+const rowSpacing = 22;   // space between row 1 and row 2
+const lineGap    = 18;   // space between the two row-2 lines
+
+const smText = 'sₘ                       (performance)';
+const dmText = 'dₘ = |∇sₘ|       (learning speed)';
+
+// Measure widths
+const smWidth = ctx2d.measureText(smText).width;
+const dmWidth = ctx2d.measureText(dmText).width;
+
+// Use widest line for alignment
+const maxWidth = Math.max(smWidth, dmWidth);
+
+// Compute common left start (center the block)
+const blockWidth = 16 + 8 + maxWidth;   // swatch + gap + text
+const startX = midX - blockWidth / 2;
+
+// Y positions
+const smY = legRow1Y + rowSpacing;
+const dmY = smY + lineGap;
+
+// ── Line 1 (sₘ) ──
+ctx2d.fillRect(startX, smY - 5, 16, 3);
+
+ctx2d.textAlign = 'left';
+ctx2d.fillText(smText, startX + 24, smY);
+
+// ── Line 2 (dₘ) ──
+ctx2d.strokeStyle = '#b0b0c8';
+ctx2d.lineWidth = 2;
+ctx2d.setLineDash([5,4]);
+ctx2d.beginPath();
+ctx2d.moveTo(startX, dmY - 3.5);
+ctx2d.lineTo(startX + 16, dmY - 3.5);
+ctx2d.stroke();
+ctx2d.setLineDash([]);
+
+ctx2d.fillStyle = '#7a7a9a';
+ctx2d.fillText(dmText, startX + 24, dmY);
+}
+
+// ══════════════════════════════════════════════════════
+// 4. THREE.JS HYPERCUBE
+// ══════════════════════════════════════════════════════
+const COL_PT   = new THREE.Color('#8f699b');
+const COL_EDGE = new THREE.Color('#b0b0c0');
+const COL_FACE = new THREE.Color('#e8e8f0');
+const COL_TICK = '#5a5a7a';
+const COL_AX   = '#1a1a2e';
+
+const CV=[[0,0,0],[1,0,0],[1,1,0],[0,1,0],[0,0,1],[1,0,1],[1,1,1],[0,1,1]];
+const CE=[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+const CF=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[2,3,7,6],[1,2,6,5],[4,7,3,0]];
+
+function makeSprite(text, font, fill, cw, ch, sw, sh){
+  const c=document.createElement('canvas'); c.width=cw; c.height=ch;
+  const x=c.getContext('2d');
+  x.font=font; x.fillStyle=fill; x.textAlign='center'; x.textBaseline='middle';
+  x.fillText(text,cw/2,ch/2);
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthTest:false}));
+  sp.scale.set(sw,sh,1); sp.renderOrder=10; return sp;
+}
+const axisLabel=t=>makeSprite(t,'bold 48px "Crimson Pro",Georgia,serif',COL_AX,160,80,0.32,0.16);
+const tickLabel=t=>makeSprite(t,'500 46px "DM Mono",monospace',COL_TICK,160,80,0.30,0.15);
+
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+const cubeEl = document.getElementById('cubeCanvas');
+
+function initRenderer(){
+  const W=Math.max(100, Math.min(cubeEl.offsetWidth||500, 2000)), H=376;
+  renderer.setSize(W,H);
+  cubeEl.parentNode.insertBefore(renderer.domElement, cubeEl);
+  cubeEl.style.display='none';
+  renderer.domElement.style.cssText='display:block;width:100%;height:376px;cursor:grab;';
+  renderer.domElement.id='threeCanvas';
+}
+
+let scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 100);
+let rx=0.42, ry=0.72, dist=3.6;
+const DEFAULT_RX=0.42, DEFAULT_RY=0.72, DEFAULT_DIST=3.6;
+
+function updCam(){
+  camera.position.set(
+    0.5+dist*Math.sin(ry)*Math.cos(rx),
+    0.5+dist*Math.sin(rx),
+    0.5+dist*Math.cos(ry)*Math.cos(rx)
+  );
+  camera.lookAt(0.5,0.5,0.5);
+}
+
+function buildCubeFrame(){
+  const edgeMat=new THREE.LineBasicMaterial({color:COL_EDGE,transparent:true,opacity:0.70});
+  for(const [a,b] of CE){
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...CV[a]),new THREE.Vector3(...CV[b])]);
+    scene.add(new THREE.Line(g,edgeMat));
+  }
+  for(const [a,b,c,d] of CF){
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute([
+      ...CV[a],...CV[b],...CV[c],...CV[a],...CV[c],...CV[d]
+    ],3));
+    scene.add(new THREE.Mesh(g,new THREE.MeshBasicMaterial({
+      color:COL_FACE,transparent:true,opacity:0.055,side:THREE.DoubleSide,depthWrite:false
+    })));
+  }
+  // labels
+  const lp1=axisLabel('p₁'); lp1.position.set(0.5,-0.30,-0.05); scene.add(lp1);
+  const lp2=axisLabel('p₂'); lp2.position.set(1.34,0.5,0.0);    scene.add(lp2);
+  const lp3=axisLabel('p₃'); lp3.position.set(1.26,1.26,0.5);   scene.add(lp3);
+  // ticks
+  const tl=0.045;
+  const tickMat=new THREE.LineBasicMaterial({color:new THREE.Color(COL_TICK),transparent:true,opacity:0.6});
+  function tick(p1,p2,lpos,txt){
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...p1),new THREE.Vector3(...p2)]);
+    scene.add(new THREE.Line(g,tickMat));
+    const s=tickLabel(txt); s.position.set(...lpos); scene.add(s);
+  }
+  for(const [v,t] of [[0,'0'],[0.5,'.5'],[1,'1']]){
+    tick([v,0,-tl],[v,0,tl],[v,-0.17,0],t);
+    tick([1+tl,v,0],[1-tl,v,0],[1.24,v,0],t);
+    tick([1+tl,1,v],[1-tl,1,v],[1.24,1.16,v],t);
+  }
+}
+
+// Points object — replaced on every update
+let pointsMesh = null;
+let glowMesh   = null;
+
+function updatePoints(pts){
+  if(pointsMesh){ scene.remove(pointsMesh); pointsMesh.geometry.dispose(); }
+  if(glowMesh)  { scene.remove(glowMesh);   glowMesh.geometry.dispose();   }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pts, 3));
+  glowMesh = new THREE.Points(geo, new THREE.PointsMaterial({
+    color: new THREE.Color('#c9a8e0'), size:0.06, transparent:true, opacity:0.10,
+    sizeAttenuation:true, depthWrite:false
+  }));
+  pointsMesh = new THREE.Points(geo, new THREE.PointsMaterial({
+    color: COL_PT, size:0.028, transparent:true, opacity:0.30,
+    sizeAttenuation:true
+  }));
+  scene.add(glowMesh);
+  scene.add(pointsMesh);
+}
+
+// ══════════════════════════════════════════════════════
+// 5. STATE & UPDATE
+// ══════════════════════════════════════════════════════
+let kappa  = 10;
+let lambda = 1.0;
+const N_PTS = 15000;
+
+function getScores(epoch){
+  const sm = MODS.map(m => perf(m, epoch));
+  const dm = MODS.map(m => dpdt(m, epoch));
+  return {sm, dm};
+}
+
+let updateScheduled = false;
+function updateAll(){
+  if(updateScheduled) return;
+  updateScheduled = true;
+  requestAnimationFrame(()=>{
+    updateScheduled = false;
+    const {sm, dm} = getScores(currentEpoch);
+    const pts = sampleMIAM(N_PTS, kappa, lambda, sm, dm, 42 + Math.round(currentEpoch));
+    updatePoints(pts);
+    drawChart(currentEpoch);
+    updateStats(sm, dm);
+    document.getElementById('epochNum').textContent = Math.round(currentEpoch);
+  });
+}
+
+function updateStats(sm, dm){
+  const geoS = Math.pow(sm.reduce((a,b)=>a*b,1), 1/3);
+  const geoD = Math.pow(dm.reduce((a,b)=>a*b,1), 1/3);
+  const rhoS = sm.map(s=>s/geoS);
+  const rhoD = dm.map(d=>d/geoD);
+  const row = document.getElementById('statsRow');
+  row.innerHTML = '';
+  MODS.forEach((mod, i) => {
+    const ratio = rhoS[i]/rhoD[i];
+    const chip = document.createElement('div');
+    chip.className = 'stat-chip';
+    chip.innerHTML =
+      `<span class="stat-label"><span class="dot" style="background:${mod.col}"></span>M${i+1}</span>`+
+      `<div class="stat-metric">
+        <span class="stat-metric-name">s<sub>${i+1}</sub></span>
+        <span class="stat-metric-val" style="color:var(--accent)">${sm[i].toFixed(3)}</span>
+      </div>`+
+      `<div class="stat-metric">
+        <span class="stat-metric-name">d<sub>${i+1}</sub></span>
+        <span class="stat-metric-val" style="color:var(--accent)">${dm[i].toFixed(4)}</span>
+      </div>`+
+      `<div class="stat-metric">
+        <span class="stat-metric-name">ρ<sub>s<sub>${i+1}</sub></sub>/ρ<sub>d<sub>${i+1}</sub></sub></span>
+        <span class="stat-metric-val" style="color:${mod.col}">${ratio.toFixed(2)}</span>
+      </div>`;
+    row.appendChild(chip);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// 6. EPOCH SLIDER (custom drag)
+// ══════════════════════════════════════════════════════
+const track = document.getElementById('epochTrack');
+const fill  = document.getElementById('epochFill');
+const thumb = document.getElementById('epochThumb');
+
+function epochToX(epoch){ return epoch / T_MAX; } // 0–1
+function xToEpoch(frac){ return Math.max(0, Math.min(T_MAX, frac * T_MAX)); }
+
+function setEpochFrac(frac){
+  const pct = (frac * 100).toFixed(2) + '%';
+  fill.style.width  = pct;
+  thumb.style.left  = pct;
+}
+
+function onEpochDrag(clientX){
+  const rect = track.getBoundingClientRect();
+  const frac = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  currentEpoch = xToEpoch(frac);
+  setEpochFrac(frac);
+  updateAll();
+}
+
+// Also make the chart canvas draggable for the epoch marker
+let draggingEpoch = false;
+track.addEventListener('mousedown', e=>{ draggingEpoch=true; onEpochDrag(e.clientX); });
+thumb.addEventListener('mousedown', e=>{ draggingEpoch=true; e.stopPropagation(); });
+window.addEventListener('mousemove', e=>{ if(draggingEpoch) onEpochDrag(e.clientX); });
+window.addEventListener('mouseup',   ()=>draggingEpoch=false);
+
+track.addEventListener('touchstart', e=>{ draggingEpoch=true; onEpochDrag(e.touches[0].clientX); },{passive:true});
+window.addEventListener('touchmove',  e=>{ if(draggingEpoch){ onEpochDrag(e.touches[0].clientX); e.preventDefault(); }},{passive:false});
+window.addEventListener('touchend',   ()=>draggingEpoch=false);
+
+// Also drag on chart canvas
+let draggingChart = false;
+chartCanvas.addEventListener('mousedown', e=>{ draggingChart=true; onChartDrag(e); });
+window.addEventListener('mousemove', e=>{ if(draggingChart) onChartDrag(e); });
+window.addEventListener('mouseup', ()=>draggingChart=false);
+chartCanvas.style.cursor='ew-resize';
+
+function onChartDrag(e){
+  const rect = chartCanvas.getBoundingClientRect();
+  const PAD_L = 62, PAD_R = 24;
+  const pw = rect.width - PAD_L - PAD_R;
+  const frac = Math.max(0, Math.min(1, (e.clientX - rect.left - PAD_L) / pw));
+  currentEpoch = xToEpoch(frac);
+  setEpochFrac(frac);
+  updateAll();
+}
+
+// Init epoch position
+setEpochFrac(currentEpoch / T_MAX);
+
+// ══════════════════════════════════════════════════════
+// 7. PARAMETER SLIDERS
+// ══════════════════════════════════════════════════════
+const kappaSlider  = document.getElementById('kappaSlider');
+const lambdaSlider = document.getElementById('lambdaSlider');
+const kappaVal     = document.getElementById('kappaVal');
+const lambdaVal    = document.getElementById('lambdaVal');
+
+kappaSlider.addEventListener('input', ()=>{
+  kappa = parseFloat(kappaSlider.value);
+  kappaVal.textContent = kappa.toFixed(1);
+  updateAll();
+});
+lambdaSlider.addEventListener('input', ()=>{
+  lambda = parseFloat(lambdaSlider.value);
+  lambdaVal.textContent = lambda.toFixed(2);
+  updateAll();
+});
+
+// ══════════════════════════════════════════════════════
+// 8. THREE.JS INTERACTION (drag-rotate + scroll-zoom)
+// ══════════════════════════════════════════════════════
+let drag3=false, lx3=0, ly3=0;
+let resetting=false, resetStart=null, fromRx=rx, fromRy=ry, fromDist=dist;
+
+function startReset(){
+  fromRx=rx; fromRy=ry; fromDist=dist;
+  resetting=true; resetStart=null;
+}
+document.getElementById('btnReset').addEventListener('click', startReset);
+
+// attach after renderer is created
+function attach3DEvents(){
+  const el = renderer.domElement;
+  el.addEventListener('mousedown', e=>{drag3=true;lx3=e.clientX;ly3=e.clientY;el.style.cursor='grabbing';resetting=false;});
+  window.addEventListener('mouseup',()=>{drag3=false;if(renderer.domElement)renderer.domElement.style.cursor='grab';});
+  window.addEventListener('mousemove',e=>{
+    if(!drag3)return;
+    ry-=(e.clientX-lx3)*0.009; rx+=(e.clientY-ly3)*0.009;
+    rx=Math.max(-1.45,Math.min(1.45,rx));
+    lx3=e.clientX;ly3=e.clientY; updCam();
+  });
+  el.addEventListener('wheel',e=>{
+    e.preventDefault(); resetting=false;
+    dist=Math.max(0.8,Math.min(8.0,dist+e.deltaY*0.005)); updCam();
+  },{passive:false});
+  // touch
+  let lpd=null;
+  el.addEventListener('touchstart',e=>{drag3=true;lx3=e.touches[0].clientX;ly3=e.touches[0].clientY;resetting=false;},{passive:true});
+  el.addEventListener('touchend',()=>{drag3=false;lpd=null;});
+  el.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(e.touches.length===1&&drag3){
+      ry-=(e.touches[0].clientX-lx3)*0.009; rx+=(e.touches[0].clientY-ly3)*0.009;
+      rx=Math.max(-1.45,Math.min(1.45,rx));
+      lx3=e.touches[0].clientX;ly3=e.touches[0].clientY; updCam();
+    } else if(e.touches.length===2){
+      const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      if(lpd!=null){dist=Math.max(0.8,Math.min(8.0,dist-(d-lpd)*0.012));updCam();}
+      lpd=d;
+    }
+  },{passive:false});
+}
+
+// ══════════════════════════════════════════════════════
+// 9. INIT & RENDER LOOP
+// ══════════════════════════════════════════════════════
+initRenderer();
+scene.background = new THREE.Color('#ffffff');
+buildCubeFrame();
+updCam();
+attach3DEvents();
+chartW = getChartW(); // measure once after layout is stable
+updateAll();
+
+const W3 = renderer.domElement.offsetWidth||500;
+camera.aspect = W3/376; camera.updateProjectionMatrix();
+
+(function loop(ts){
+  requestAnimationFrame(loop);
+  if(resetting){
+    if(!resetStart) resetStart=ts;
+    const t=Math.min((ts-resetStart)/600,1);
+    const ease=1-Math.pow(1-t,3);
+    rx=fromRx+(DEFAULT_RX-fromRx)*ease;
+    ry=fromRy+(DEFAULT_RY-fromRy)*ease;
+    dist=fromDist+(DEFAULT_DIST-fromDist)*ease;
+    updCam(); if(t>=1) resetting=false;
+  }
+  renderer.render(scene, camera);
+})();
+
+window.addEventListener('resize',()=>{
+  chartW = getChartW(); // re-measure from parent on genuine window resize
+  const W=Math.max(100, Math.min(renderer.domElement.offsetWidth||500, 2000));
+  renderer.setSize(W,376);
+  camera.aspect=W/376; camera.updateProjectionMatrix();
+  drawChart(currentEpoch);
+  reportHeight();
+});
+
+// postMessage for iframe auto-height
+function reportHeight(){ window.parent.postMessage({iframeHeight:document.body.scrollHeight},'*'); }
+requestAnimationFrame(()=>{ reportHeight(); setTimeout(reportHeight,200); setTimeout(reportHeight,600); });
+</script>
+</body>
+</html>
