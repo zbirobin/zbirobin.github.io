@@ -321,7 +321,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
 /* ── Caption ── */
 .caption {
-  font-size: 1.0rem;
+  font-size: 1.2rem;
   color: var(--ink-mid);
   line-height: 1.65;
   font-weight: 300;
@@ -412,7 +412,7 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
           <div class="slider-row">
             <span class="slider-name"><em>λ</em></span>
             <input type="range" id="lambdaSlider" min="0" max="10" step="0.1" value="1">
-            <span class="slider-val" id="lambdaVal">1.00</span>
+            <span class="slider-val" id="lambdaVal">1.0</span>
           </div>
         </div>
 
@@ -434,14 +434,14 @@ input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
     <b>Right:</b> Resulting MIAM distribution 
     p&nbsp;=&nbsp;(p<sub>1</sub>,&nbsp;p<sub>2</sub>,&nbsp;p<sub>3</sub>), 
-    where p<sub>m</sub> denotes the probability of masking modality <em>m</em>, updated live. 5 000 samples are drawn from the distribution at each epoch.
+    where p<sub><em>m</em></sub> denotes the probability of masking modality <em>m</em>, updated live. 5 000 samples are drawn from the distribution at each epoch.
     <b>Bottom:</b> Adjust the epoch and the MIAM parameters.
     The sharpness <em>κ</em> controls concentration toward the hypercube corners,
     while <em>λ</em> determines the strength of imbalance correction.
     Dominant modalities (high <em>s<sub>m</sub></em>, low <em>d<sub>m</sub></em>) are masked more frequently.
     This behavior is reflected in the ratio
-    ρ<sub>s<sub>m</sub></sub>/ρ<sub>d<sub>m</sub></sub> = (s<sub>m</sub>/d<sub>m</sub>) / geo(s/d),
-    where geo(s/d) is the geometric mean of the per-modality ratios s<sub>m</sub>/d<sub>m</sub> across all modalities.
+    <em>ρ<sub>s<sub>m</sub></sub>/ρ<sub>d<sub>m</sub></sub> = (s<sub>m</sub>/d<sub>m</sub>) / </em>geo(<em>s/d</em>),
+    where geo(<em>s/d</em>) is the geometric mean of the per-modality ratios <em>s<sub>m</sub>/d<sub>m</sub></em> across all modalities.
     As shown in the statistics panel, the larger this ratio, the more strongly modality <em>m</em> is masked compared to a balanced strategy.
     Adjusting the parameters illustrates how MIAM adapts to different training dynamics.
   </p>
