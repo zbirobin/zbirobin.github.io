@@ -77,6 +77,21 @@ selected_publications:
           rel="noopener noreferrer">Video</a>**
       </span>
 
+  - image_path: /assets/images/geofar/geofar.png
+    alt: "GeoFAR"
+    title: "GeoFAR: Geography-Informed Frequency-Aware Super-Resolution for Climate Data"
+    excerpt: >
+      Chang Xu, Gencer Sumbul, Li Mi, **Robin Zbinden**, Devis Tuia <br>
+      *ICLR* (2026) <br>
+      <span class="tight-links">
+          **🌐 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
+          rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
+          **📄 <a href="https://openreview.net/forum?id=0WHpOekph0" target="_blank"
+          rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
+          rel="noopener noreferrer">Code</a>**
+      </span>
+
   - image_path: /assets/images/pseudo_absences/pseudo_absences.png
     alt: "Pseudo-absences for species distribution modeling"
     title: "On the selection and effectiveness of pseudo-absences for species distribution modeling with deep learning"
@@ -109,6 +124,21 @@ publications:
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
           **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
           rel="noopener noreferrer">Data</a>**
+      </span>
+
+  - image_path: /assets/images/geofar/geofar.png
+    alt: "GeoFAR"
+    title: "GeoFAR: Geography-Informed Frequency-Aware Super-Resolution for Climate Data"
+    excerpt: >
+      Chang Xu, Gencer Sumbul, Li Mi, **Robin Zbinden**, Devis Tuia <br>
+      *ICLR* (2026) <br>
+      <span class="tight-links">
+          **🌐 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
+          rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
+          **📄 <a href="https://openreview.net/forum?id=0WHpOekph0" target="_blank"
+          rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
+          rel="noopener noreferrer">Code</a>**
       </span>
       
   - image_path: /assets/images/CISO/CISO_overview_dataset.png
