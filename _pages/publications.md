@@ -165,9 +165,9 @@ publications:
     title: "Migrating in a warming world: A deep learning approach to predict pan-American seasonal shifts in the monarch butterfly niche"
     excerpt: >
       Chiara Vanalli, **Robin Zbinden**, Nina van Tiel, Devis Tuia <br>
-      *Accepted in Global Change Biology* (2026) <br>
+      *Global Change Biology* (2026) <br>
       <span class="tight-links">
-          **📄 <a href="https://www.biorxiv.org/content/10.1101/2025.06.25.661455v1" target="_blank"
+          **📄 <a href="https://onlinelibrary.wiley.com/doi/10.1111/gcb.70805" target="_blank"
             rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
           **💻 <a href="https://figshare.com/s/4f144c56aaa72021d030" target="_blank"
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
