@@ -135,8 +135,8 @@ custom_js:
     </a>
   </span>
 
-  <span class="link-block" style="display:none;">
-    <a href="https://<POSTER LINK>" target="_blank"
+  <span class="link-block">
+    <a href="/assets/pdf/MIAM/MIAM_ICLR.pdf" target="_blank"
       class="external-link button is-normal is-rounded is-dark">
       <span class="icon">
         <i class="fas fa-image"></i>
@@ -145,8 +145,8 @@ custom_js:
     </a>
   </span>
 
-  <span class="link-block" style="display:none;">
-    <a href="https://<VIDEO LINK>" target="_blank"
+  <span class="link-block">
+    <a href="https://iclr.cc/virtual/2026/poster/10007377" target="_blank"
       class="external-link button is-normal is-rounded is-dark">
       <span class="icon">
         <i class="fas fa-image"></i>

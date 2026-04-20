@@ -19,7 +19,11 @@ selected_publications:
           **💻 <a href="https://github.com/zbirobin/MIAM" target="_blank"
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
           **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
-          rel="noopener noreferrer">Data</a>**
+          rel="noopener noreferrer">Data</a> &nbsp;·&nbsp;**
+          **🏞️ <a href="/assets/pdf/MIAM/MIAM_ICLR.pdf" target="_blank"
+          rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
+          **🎬 <a href="https://iclr.cc/virtual/2026/poster/10007377" target="_blank"
+          rel="noopener noreferrer">Video</a>**
       </span>
   
   - image_path: /assets/images/masksdm/MaskSDM_applications.png
@@ -89,7 +93,11 @@ selected_publications:
           **📄 <a href="https://openreview.net/forum?id=0WHpOekph0" target="_blank"
           rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
           **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
-          rel="noopener noreferrer">Code</a>**
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **🏞️ <a href="/assets/pdf/GeoFAR/GeoFAR.pdf" target="_blank"
+          rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
+          **🎬 <a href="https://iclr.cc/virtual/2026/poster/10011930" target="_blank"
+          rel="noopener noreferrer">Video</a>**
       </span>
 
   - image_path: /assets/images/pseudo_absences/pseudo_absences.png
@@ -123,7 +131,11 @@ publications:
           **💻 <a href="https://github.com/zbirobin/MIAM" target="_blank"
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
           **💽 <a href="https://huggingface.co/zbirobin/MIAM" target="_blank"
-          rel="noopener noreferrer">Data</a>**
+          rel="noopener noreferrer">Data</a> &nbsp;·&nbsp;**
+          **🏞️ <a href="/assets/pdf/MIAM/MIAM_ICLR.pdf" target="_blank"
+          rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
+          **🎬 <a href="https://iclr.cc/virtual/2026/poster/10007377" target="_blank"
+          rel="noopener noreferrer">Video</a>**
       </span>
 
   - image_path: /assets/images/geofar/geofar.png
@@ -138,7 +150,11 @@ publications:
           **📄 <a href="https://openreview.net/forum?id=0WHpOekph0" target="_blank"
           rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
           **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
-          rel="noopener noreferrer">Code</a>**
+          rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
+          **🏞️ <a href="/assets/pdf/GeoFAR/GeoFAR.pdf" target="_blank"
+          rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
+          **🎬 <a href="https://iclr.cc/virtual/2026/poster/10011930" target="_blank"
+          rel="noopener noreferrer">Video</a>**
       </span>
       
   - image_path: /assets/images/CISO/CISO_overview_dataset.png
