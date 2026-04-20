@@ -94,7 +94,7 @@ selected_publications:
           rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
           **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
-          **🏞️ <a href="/assets/pdf/GeoFAR/GeoFAR.pdf" target="_blank"
+          **🏞️ <a href="/assets/images/geofar/ICLR_GeoFAR_poster.png" target="_blank"
           rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
           **🎬 <a href="https://iclr.cc/virtual/2026/poster/10011930" target="_blank"
           rel="noopener noreferrer">Video</a>**
@@ -151,7 +151,7 @@ publications:
           rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
           **💻 <a href="https://eceo-epfl.github.io/GeoFAR/" target="_blank"
           rel="noopener noreferrer">Code</a> &nbsp;·&nbsp;**
-          **🏞️ <a href="/assets/pdf/GeoFAR/GeoFAR.pdf" target="_blank"
+          **🏞️ <a href="/assets/images/geofar/ICLR_GeoFAR_poster.png" target="_blank"
           rel="noopener noreferrer">Poster</a> &nbsp;·&nbsp;**
           **🎬 <a href="https://iclr.cc/virtual/2026/poster/10011930" target="_blank"
           rel="noopener noreferrer">Video</a>**
