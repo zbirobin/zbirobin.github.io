@@ -67,7 +67,7 @@ selected_publications:
     title: "Geographic Location Encoding with Spherical Harmonics and Sinusoidal Representation Networks"
     excerpt: >
       Marc Rußwurm, Konstantin Klemmer, Esther Rolf, **Robin Zbinden**, Devis Tuia <br>
-      *ICLR* (2024), ✨spotlight✨ <br>
+      *ICLR* (2024), ✨spotlight (top 5%)✨ <br>
       <span class="tight-links">
           **🌐 <a href="https://marcrusswurm.com/locationencoder/" target="_blank"
           rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
@@ -285,7 +285,7 @@ publications:
     title: "Geographic Location Encoding with Spherical Harmonics and Sinusoidal Representation Networks"
     excerpt: >
       Marc Rußwurm, Konstantin Klemmer, Esther Rolf, **Robin Zbinden**, Devis Tuia <br>
-      *ICLR* (2024), ✨spotlight✨ <br>
+      *ICLR* (2024), ✨spotlight (top 5%)✨ <br>
       <span class="tight-links">
           **🌐 <a href="https://marcrusswurm.com/locationencoder/" target="_blank"
           rel="noopener noreferrer">Webpage</a> &nbsp;·&nbsp;**
