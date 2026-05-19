@@ -117,6 +117,19 @@ selected_publications:
 
 publications:
 
+  - image_path: /assets/images/multi_scale_EI/multi_scale_EI.png
+    alt: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
+    title: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
+    excerpt: >
+      Nina van Tiel, **Robin Zbinden**, Chiara Vanalli, Benjamin Kellenberger, Loic Pellissier, Devis Tuia <br>
+      *Ecological Informatics* (2026) <br>
+      <span class="tight-links">
+          **📄 <a href="https://www.sciencedirect.com/science/article/pii/S1574954126002050" target="_blank"
+            rel="noopener noreferrer">Paper</a> &nbsp;·&nbsp;**
+          **💻 <a href="https://zenodo.org/records/15745163" target="_blank"
+          rel="noopener noreferrer">Code</a>**
+      </span>
+
   - image_path: /assets/images/miam/miam_main.png
     alt: "MIAM"
     title: "MIAM: Modality Imbalance-Aware Masking for Multimodal Ecological Applications"
@@ -191,17 +204,6 @@ publications:
           rel="noopener noreferrer">Data</a> &nbsp;·&nbsp;**
           **🏞️ <a href="/assets/pdf/monarch/monarch_poster.pdf" target="_blank"
           rel="noopener noreferrer">Poster</a>**
-      </span>
-
-  - image_path: /assets/images/multi_scale_EI/multi_scale_EI.png
-    alt: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
-    title: "Multi-scale neural networks enhance species distribution modelling across predictors and taxonomic groups"
-    excerpt: >
-      Nina van Tiel, **Robin Zbinden**, Chiara Vanalli, Benjamin Kellenberger, Loic Pellissier, Devis Tuia <br>
-      *Preprint* (2025) <br>
-      <span class="tight-links">
-          **📄 <a href="https://www.biorxiv.org/content/10.1101/2025.10.15.682577v1" target="_blank"
-            rel="noopener noreferrer">Paper</a>**
       </span>
 
   - image_path: /assets/images/masksdm/MaskSDM_applications.png
