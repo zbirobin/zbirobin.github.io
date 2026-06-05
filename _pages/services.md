@@ -27,6 +27,10 @@ layout: single
 
 ## Master’s Student Supervision at EPFL
 
+- **[Claudia Maiolino](https://www.linkedin.com/in/claudia-maiolino-215a67288/){:target="_blank"}** (2025-2026) <br/> 
+  - Master thesis: Uncertainty Quantification and Explanation in Deep Learning for Species Distribution Modeling
+   <br/>
+
 - **[Wesley Monteith-Finas](https://www.linkedin.com/in/wesley-monteith/){:target="_blank"}** (2025) <br/> 
   - Semester project + research assistant: An Image is NotWorth 72 Time Steps? Sentinel-2 Imagery in
 Deep, Multi-Modal, Masked Species Distribution Modeling
