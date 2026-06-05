@@ -9,6 +9,7 @@ layout: single
 
 ### Conferences
 
+- **[NeurIPS 2026](https://neurips.cc/Conferences/2026){:target="_blank"}**
 - **[ICLR 2026](https://iclr.cc/Conferences/2026){:target="_blank"}**
 - **[NeurIPS 2025](https://neurips.cc/Conferences/2025){:target="_blank"}**
 - **[ICML 2025](https://icml.cc/Conferences/2025){:target="_blank"}**
