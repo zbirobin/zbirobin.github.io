@@ -12,7 +12,7 @@ layout: single
 
 ### Invited Talks
 
-- **[Machine Learning in Biology Summer School 2026] (university of Bern)(https://ibusummerschool.netlify.app/){:target="_blank"}** — Invited speaker: *From imperfect and multimodal data to ecological understanding* <br/>
+- **[Machine Learning in Biology Summer School 2026](https://ibusummerschool.netlify.app/){:target="_blank"} (university of Bern)** — Invited speaker: *From imperfect and multimodal data to ecological understanding* <br/>
 
 ### Reviewer for Conferences and Journals
 
