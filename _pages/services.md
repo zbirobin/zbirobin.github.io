@@ -5,37 +5,29 @@ author_profile: True
 layout: single
 ---
 
-## Organization
+### Organization
 
 - **[AI + Environment Summit (AIES)](https://ai-environment-summit.com/){:target="_blank"}** — Co-organizer (2025–present) <br/>
 - **[DeepSDM Day 2026](https://eceo-epfl.github.io/deepsdm2026/){:target="_blank"}** — Co-organizer <br/>
 
-## Invited Talks
+### Invited Talks
 
-- **[Machine Learning in Biology Summer School (university of Bern)](https://ibusummerschool.netlify.app/){:target="_blank"}** — Invited speaker (2025) <br/>
+- **[Machine Learning in Biology Summer School 2026] (university of Bern)(https://ibusummerschool.netlify.app/){:target="_blank"}** — Invited speaker: *From imperfect and multimodal data to ecological understanding* <br/>
 
-## Reviewer for Conferences and Journals
-
-### Conferences
+### Reviewer for Conferences and Journals
 
 - **[NeurIPS 2026](https://neurips.cc/Conferences/2026){:target="_blank"}**
 - **[ICLR 2026](https://iclr.cc/Conferences/2026){:target="_blank"}**
 - **[NeurIPS 2025](https://neurips.cc/Conferences/2025){:target="_blank"}**
 - **[ICML 2025](https://icml.cc/Conferences/2025){:target="_blank"}**
-
-### Journals
-
 - **[Ecological Informatics](https://www.journals.elsevier.com/ecological-informatics){:target="_blank"}**
 - **[Limnology and Oceanography Letters](https://aslopubs.onlinelibrary.wiley.com/journal/19395590){:target="_blank"}**
-
-###  Workshops
-
 - **[Computer Vision for Ecology Workshop (ICCV 2025)](https://cv4e.netlify.app/papers-2025/){:target="_blank"}**
 - **[Climate Change AI Workshop (ICLR 2025)](https://www.climatechange.ai/events/iclr2025){:target="_blank"}**
 - **[Climate Change AI Workshop (NeurIPS 2024)](https://www.climatechange.ai/events/neurips2024){:target="_blank"}**
 - **[Computer Vision for Ecology Workshop (ECCV 2024)](https://cv4e.netlify.app/papers/){:target="_blank"}**
 
-## Master’s Student Supervision at EPFL
+### Master’s Student Supervision at EPFL
 
 - **[Claudia Maiolino](https://www.linkedin.com/in/claudia-maiolino-215a67288/){:target="_blank"}** (2025-2026) <br/> 
   - Master thesis: Uncertainty Quantification and Explanation in Deep Learning for Species Distribution Modeling
@@ -57,7 +49,7 @@ Deep, Multi-Modal, Masked Species Distribution Modeling
    <br/>
   - Current position: Doctoral student at UNIL (since 2025) <br/>
 
-## Teaching Assistance at EPFL
+### Teaching Assistance at EPFL
 *(SA = Student Assistant, TA = Teaching Assistant)*
 
 - **[Machine learning (CS-433)](https://edu.epfl.ch/coursebook/en/machine-learning-CS-433){:target="_blank"}** <br/>

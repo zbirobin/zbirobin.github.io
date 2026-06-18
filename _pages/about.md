@@ -127,7 +127,7 @@ Before starting my PhD, I completed a **Master's degree in Data Science** and a 
 
 ## News
 - **Jun 2026** — I gave an invited talk at the [Machine Learning in Biology Summer School](https://ibusummerschool.netlify.app/){:target="_blank"} (university of Bern) on *From imperfect and multimodal data to ecological understanding* 🗣️
-- **Jun 2026** - We organized the [DeepSDM Day 2026](https://eceo-epfl.github.io/deepsdm2026/){:target="_blank"}, a one-day workshop on deep learning for species distribution modeling at EPFL 🦚
+- **Jun 2026** — We organized the [DeepSDM Day 2026](https://eceo-epfl.github.io/deepsdm2026/){:target="_blank"}, a one-day workshop on deep learning for species distribution modeling at EPFL 🦚
 - **May 2026** — Our paper was published in *Ecological Informatics*, showing that [multi-scale SDMs](https://www.sciencedirect.com/science/article/pii/S1574954126002050) with deep learning improve predictive perfomance across environmental predictors and taxonomic groups 🌿🪲🐸
 - **Apr 2026** — I presented [MIAM](/publications/miam/){:target="_blank"}, a new masking strategy for multimodal ecological applications, at *ICLR 2026* in Brazil 🇧🇷 Very proud of this work, which is a central contribution of my PhD 🎉
 - **Apr 2026** — [GeoFAR](https://eceo-epfl.github.io/GeoFAR/){:target="_blank"}, our novel climate downscaling approach leveraging frequency-aware representations and geography-aware implicit neural representations, appeared at *ICLR 2026* 🌡️🌧️🥳
