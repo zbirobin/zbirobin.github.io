@@ -16,16 +16,13 @@ layout: single
 
 ### Reviewer for Conferences and Journals
 
-- **[NeurIPS 2026](https://neurips.cc/Conferences/2026){:target="_blank"}**
-- **[ICLR 2026](https://iclr.cc/Conferences/2026){:target="_blank"}**
-- **[NeurIPS 2025](https://neurips.cc/Conferences/2025){:target="_blank"}**
-- **[ICML 2025](https://icml.cc/Conferences/2025){:target="_blank"}**
+- **[NeurIPS (2025, 2026)](https://neurips.cc/Conferences/2026){:target="_blank"}**
+- **[ICLR (2026)](https://iclr.cc/Conferences/2026){:target="_blank"}**
+- **[ICML (2025)](https://icml.cc/Conferences/2025){:target="_blank"}**
 - **[Ecological Informatics](https://www.journals.elsevier.com/ecological-informatics){:target="_blank"}**
 - **[Limnology and Oceanography Letters](https://aslopubs.onlinelibrary.wiley.com/journal/19395590){:target="_blank"}**
-- **[Computer Vision for Ecology Workshop (ICCV 2025)](https://cv4e.netlify.app/papers-2025/){:target="_blank"}**
-- **[Climate Change AI Workshop (ICLR 2025)](https://www.climatechange.ai/events/iclr2025){:target="_blank"}**
-- **[Climate Change AI Workshop (NeurIPS 2024)](https://www.climatechange.ai/events/neurips2024){:target="_blank"}**
-- **[Computer Vision for Ecology Workshop (ECCV 2024)](https://cv4e.netlify.app/papers/){:target="_blank"}**
+- **[Computer Vision for Ecology Workshop (ECCV 2024, ICCV 2025)](https://cv4e.netlify.app/papers-2025/){:target="_blank"}**
+- **[Climate Change AI Workshop (NeurIPS 2024, ICLR 2025)](https://www.climatechange.ai/events/iclr2025){:target="_blank"}**
 
 ### Master’s Student Supervision at EPFL
 
