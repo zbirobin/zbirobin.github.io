@@ -5,6 +5,15 @@ author_profile: True
 layout: single
 ---
 
+## Organization
+
+- **[AI + Environment Summit (AIES)](https://ai-environment-summit.com/){:target="_blank"}** — Co-organizer (2025–present) <br/>
+- **[DeepSDM Day 2026](https://eceo-epfl.github.io/deepsdm2026/){:target="_blank"}** — Co-organizer <br/>
+
+## Invited Talks
+
+- **[Machine Learning in Biology Summer School (university of Bern)](https://ibusummerschool.netlify.app/){:target="_blank"}** — Invited speaker (2025) <br/>
+
 ## Reviewer for Conferences and Journals
 
 ### Conferences
